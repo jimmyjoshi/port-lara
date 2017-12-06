@@ -151,4 +151,20 @@ class BaseApiController extends BaseController
         ]);
         return $this->respond($data);
     }
+
+    /**
+     * Respond
+     *
+     * @param  array $data
+     * @param  array  $headers
+     * @return mix
+     */
+    public function ApiSuccessResponse($data = array(), $headers = [])
+    {
+        $response['data'] = $data;
+        $response['message'] = 'Success';
+        $response['code'] = $this->getStatusCode();
+        //return Response::json($response, $this->getStatusCode(), $headers);
+        return Response::json($response);
+    }
 }

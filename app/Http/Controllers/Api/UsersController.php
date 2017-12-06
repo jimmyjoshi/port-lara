@@ -76,4 +76,16 @@ class UsersController extends Controller
         }*/
     }
 
+    public function forgotPassword(Request $request)
+    {
+        if($request->get('email'))
+        {
+            return Response::json([
+                    'mailSend'      => 1,
+                    'message'       => 'New Password send on Register Email Id'
+            ]);
+        }
+
+        return $this->respondInternalError('Invalid Arguments');
+    }
 }

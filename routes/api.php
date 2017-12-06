@@ -36,11 +36,9 @@ Route::group(['namespace' => 'Api', 'middleware' => 'jwt.customauth'], function 
     Route::post('events/create', 'APIEventsController@create')->name('events.create');
     Route::post('events/edit', 'APIEventsController@edit')->name('events.edit');
     Route::post('events/delete', 'APIEventsController@delete')->name('events.delete');
-<<<<<<< HEAD
-=======
 
 
     Route::get('get-team-members', 'APITeamController@index')->name('api.get-team-members');
     Route::get('get-contacts', 'APITeamController@getContacts')->name('api.get-contacts');
->>>>>>> a741c11fe6b07ecca513f8d5274d3ab8ea91685e
+
 });

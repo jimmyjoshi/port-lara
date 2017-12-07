@@ -37,6 +37,20 @@
                 </a>
             </li>
 
+            <li class="{{ active_class(Active::checkUriPattern('admin/teams')) }}">
+                <a href="{{ route('admin.teams.index') }}">
+                    <i class="fa fa-dashboard"></i>
+                    <span>Teams</span>
+                </a>
+            </li>
+
+            <li class="{{ active_class(Active::checkUriPattern('admin/teams')) }}">
+                <a href="{{ route('admin.contacts.index') }}">
+                    <i class="fa fa-dashboard"></i>
+                    <span>Contacts</span>
+                </a>
+            </li>
+
             <li class="header">{{ trans('menus.backend.sidebar.system') }}</li>
 
             @role(1)

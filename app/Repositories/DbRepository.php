@@ -3,22 +3,22 @@
 /**
  * Abstract Class DbRepository
  *
- * @author Justin Bevan justin@smokerschoiceusa.com
- * @package FTX\Repositories
+ * @author Anuj Jaha
+ 
  */
 
 use App\Exceptions\GeneralException;
 
 Abstract class DbRepository
 {
-	/**
-	 * Find Or Throw Exception
-	 *
-	 * @param $id
-	 * @param array $relations
-	 * @return mixed
-	 * @throws GeneralException
-	 */
+    /**
+     * Find Or Throw Exception
+     *
+     * @param $id
+     * @param array $relations
+     * @return mixed
+     * @throws GeneralException
+     */
     public function findOrThrowException($id, $relations = array())
     {
         if(is_int($id) && !is_null($this->model->find($id)))
@@ -54,17 +54,17 @@ Abstract class DbRepository
      */
     public function getPaginated($per_page, $active = '', $order_by = 'id', $sort = 'asc')
     {
-    	if($active)
-    	{
-	        return $this->model->where('status', $active)
-	            ->orderBy($order_by, $sort)
-	            ->paginate($per_page);
-	    }
-	    else
-	    {
-	    	return $this->model->orderBy($order_by, $sort)
-	            ->paginate($per_page);
-	    }
+        if($active)
+        {
+            return $this->model->where('status', $active)
+                ->orderBy($order_by, $sort)
+                ->paginate($per_page);
+        }
+        else
+        {
+            return $this->model->orderBy($order_by, $sort)
+                ->paginate($per_page);
+        }
     }
 
     /**
@@ -170,5 +170,31 @@ Abstract class DbRepository
     public function setTableStructure($array = array())
     {
         return array_values($array);
+    }
+
+    /**
+     * Get Select Options
+     * 
+     * @param string $key
+     * @param string $value
+     * @return array
+     */
+    public function getSelectOptions($key = 'id', $value = 'name')
+    {
+        $options    = $this->model->all();
+        $result     = [];
+        
+        if($options && count($options))
+        {
+            foreach($options as $option)
+            {
+                if($option->$key && $option->$value)
+                {
+                    $result[$option->$key] = $option->$value;
+                }
+            }
+        }
+
+        return $result;
     }
 }

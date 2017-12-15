@@ -42,4 +42,8 @@ Route::group(['namespace' => 'Api', 'middleware' => 'jwt.customauth'], function 
     Route::get('get-team-members', 'APITeamController@index')->name('api.get-team-members');
     Route::get('get-contacts', 'APITeamController@getContacts')->name('api.get-contacts');
 
+    Route::get('document-categories', 'APIMasterController@getDocumentCategories')->name('api.get-document-categories');
+    Route::get('get-documents', 'APIMasterController@getAllDocuments')->name('api.get-all-documents');
+
+    Route::get('get-all-entities', 'APIMasterController@getAllEntities')->name('api.get-all-entities');
 });

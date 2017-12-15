@@ -5,6 +5,7 @@ Route::group([
 ], function () {
 
     Route::get('entities/get', 'AdminEntityController@getTableData')->name('entities.get-list-data');
+    
     /*
      * Admin Entity Controller
      */

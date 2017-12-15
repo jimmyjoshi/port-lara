@@ -37,6 +37,13 @@
                 </a>
             </li>
 
+            <li class="{{ active_class(Active::checkUriPattern('admin/entities')) }}">
+                <a href="{{ route('admin.entities.index') }}">
+                    <i class="fa fa-dashboard"></i>
+                    <span>Entity Manager</span>
+                </a>
+            </li>
+
             <li class="{{ active_class(Active::checkUriPattern('admin/teams')) }}">
                 <a href="{{ route('admin.teams.index') }}">
                     <i class="fa fa-dashboard"></i>
@@ -44,10 +51,24 @@
                 </a>
             </li>
 
-            <li class="{{ active_class(Active::checkUriPattern('admin/teams')) }}">
+            <li class="{{ active_class(Active::checkUriPattern('admin/contacts')) }}">
                 <a href="{{ route('admin.contacts.index') }}">
                     <i class="fa fa-dashboard"></i>
                     <span>Contacts</span>
+                </a>
+            </li>
+
+            <li class="{{ active_class(Active::checkUriPattern('admin/document-categories')) }}">
+                <a href="{{ route('admin.document-categories.index') }}">
+                    <i class="fa fa-dashboard"></i>
+                    <span>Document Category Manager</span>
+                </a>
+            </li>
+
+            <li class="{{ active_class(Active::checkUriPattern('admin/uploads')) }}">
+                <a href="{{ route('admin.uploads.index') }}">
+                    <i class="fa fa-dashboard"></i>
+                    <span>Upload Manager</span>
                 </a>
             </li>
 

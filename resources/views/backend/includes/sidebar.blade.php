@@ -72,6 +72,13 @@
                 </a>
             </li>
 
+             <li class="{{ active_class(Active::checkUriPattern('admin/todos')) }}">
+                <a href="{{ route('admin.todos.index') }}">
+                    <i class="fa fa-dashboard"></i>
+                    <span>ToDo Manager</span>
+                </a>
+            </li>
+
             <li class="header">{{ trans('menus.backend.sidebar.system') }}</li>
 
             @role(1)

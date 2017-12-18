@@ -166,7 +166,7 @@ class APIMasterController extends BaseApiController
             if($status)
             {
                 $todos = $this->toDoRepository->getById($request->get('toDoId'));
-                
+
                 if($todos && count($todos))
                 {
                     $responseData = $this->masterTransformer->singleToDosTransform($todos);
@@ -178,9 +178,9 @@ class APIMasterController extends BaseApiController
         }
 
         $error = [
-            'reason' => 'Unable to Create New ToDos!'
+            'reason' => 'Unable to Update ToDo!'
         ];
 
-        return $this->setStatusCode(400)->failureResponse($error, 'Unable to Create New ToDos !');    
+        return $this->setStatusCode(400)->failureResponse($error, 'Unable to Update ToDos !');    
     }
 }

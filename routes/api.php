@@ -46,4 +46,8 @@ Route::group(['namespace' => 'Api', 'middleware' => 'jwt.customauth'], function 
     Route::get('get-documents', 'APIMasterController@getAllDocuments')->name('api.get-all-documents');
 
     Route::get('get-all-entities', 'APIMasterController@getAllEntities')->name('api.get-all-entities');
+
+    Route::get('get-all-todos', 'APIMasterController@getAllTodos')->name('api.get-all-todos');
+    Route::post('create-todos', 'APIMasterController@createTodos')->name('api.create-todos');
+    Route::post('update-todos', 'APIMasterController@updateTodos')->name('api.update-todos');
 });

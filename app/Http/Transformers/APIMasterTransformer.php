@@ -81,4 +81,48 @@ class APIMasterTransformer extends Transformer
 
         return $response;
     }
+
+    /**
+     * All ToDos Transform
+     * 
+     * @param array $items
+     * @return array
+     */
+    public function allToDosTransform($items)
+    {
+        $response = [];
+
+        if(isset($items) && count($items))
+        {
+            foreach($items as $item)   
+            {
+                $response[] = [
+                    'toDoId'    => (int) $item->id,
+                    'title'     => $item->title,
+                    'notes'     => $item->notes,
+                    'status'    => $item->status ? $item->status : 1,
+                    'created'   => date('d-m-Y', strtotime($item->created_at))
+                ];
+            }
+        }
+
+        return $response;
+    }
+
+    /**
+     * Single ToDos Transform
+     * 
+     * @param object $items
+     * @return array
+     */
+    public function singleToDosTransform($item)
+    {
+        return [
+            'toDoId'    => (int) $item->id,
+            'title'     => $item->title,
+            'notes'     => $item->notes,
+            'status'    => $item->status ? $item->status : 1,
+            'created'   => date('d-m-Y', strtotime($item->created_at))
+        ];
+    }
 }

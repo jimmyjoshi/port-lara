@@ -3,6 +3,7 @@
 namespace App\Http\Transformers;
 
 use App\Http\Transformers;
+use URL;
 
 class UserTransformer extends Transformer 
 {

@@ -9,19 +9,21 @@ class UserTransformer extends Transformer
     public function transform($data) 
     {
         return [
-            'userId'    => $data->id,
-            'userToken' => $data->token,
-            'name'      => $this->nulltoBlank($data->name),
-            'email'     => $this->nulltoBlank($data->email)
+            'userId'        => $data->id,
+            'userToken'     => $data->token,
+            'name'          => $this->nulltoBlank($data->name),
+            'profilePic'    => URL::to('/').'/uploads/users/'.$data->profile_picture,
+            'email'         => $this->nulltoBlank($data->email)
         ];
     }
     
     public function getUserInfo($data) 
     {
         return [
-            'userId'    => $data->id,
-            'name'      => $this->nulltoBlank($data->name),
-            'email'     => $this->nulltoBlank($data->email)
+            'userId'        => $data->id,
+            'name'          => $this->nulltoBlank($data->name),
+            'profilePic'    => URL::to('/').'/uploads/users/'.$data->profile_picture,
+            'email'         => $this->nulltoBlank($data->email)
         ];
     }
     

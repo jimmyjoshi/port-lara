@@ -13,7 +13,7 @@ class UserTransformer extends Transformer
             'userId'        => $data->id,
             'userToken'     => $data->token,
             'name'          => $this->nulltoBlank($data->name),
-            'profilePic'    => URL::to('/').'/uploads/users/'.$data->profile_picture,
+            'profilePic'    => isset($data->profile_picture) ? URL::to('/').'/uploads/users/'.$data->profile_picture  : URL::to('/').'/uploads/users/default.png',
             'email'         => $this->nulltoBlank($data->email)
         ];
     }

@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Http\Controllers\Backend\Entity;
+namespace App\Http\Controllers\Backend\TaxDocument;
 
+use Html;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Yajra\Datatables\Facades\Datatables;
-use App\Models\Access\User\User;
-use App\Repositories\Entity\EloquentEntityRepository;
+use App\Repositories\TaxDocument\EloquentTaxDocumentRepository;
 
 /**
- * Class AdminEntityController
+ * Class AdminTaxDocumentController
  */
-class AdminEntityController extends Controller
+class AdminTaxDocumentController extends Controller
 {
 	/**
 	 * Event Repository
@@ -25,32 +25,30 @@ class AdminEntityController extends Controller
      * 
      * @var string
      */
-    protected $createSuccessMessage = "Entity Created Successfully!";
+    protected $createSuccessMessage = "Tax Document Created Successfully!";
 
     /**
      * Edit Success Message
      * 
      * @var string
      */
-    protected $editSuccessMessage = "Entity Edited Successfully!";
+    protected $editSuccessMessage = "Tax Document Edited Successfully!";
 
     /**
      * Delete Success Message
      * 
      * @var string
      */
-    protected $deleteSuccessMessage = "Entity Deleted Successfully";
+    protected $deleteSuccessMessage = "Tax Document Deleted Successfully";
 
 	/**
 	 * __construct
 	 * 
-	 * @param EloquentEventRepository $eventRepository
 	 */
 	public function __construct()
 	{
-        $this->repository   = new EloquentEntityRepository;
-        $this->userModel    = new User;
-	}
+        $this->repository   = new EloquentTaxDocumentRepository;
+    }
 
     /**
      * Event Listing 
@@ -76,11 +74,8 @@ class AdminEntityController extends Controller
      */
     public function create(Request $request)
     {
-        $users = $this->userModel->all()->pluck('name', 'id')->toArray();
-
         return view($this->repository->setAdmin(true)->getModuleView('createView'))->with([
-            'repository'    => $this->repository,
-            'users'         => $users
+            'repository' => $this->repository,
         ]);
     }
 
@@ -91,7 +86,9 @@ class AdminEntityController extends Controller
      */
     public function store(Request $request)
     {
-        $this->repository->create($request->all());
+        $input = $request->all();
+
+        $this->repository->create($input);
 
         return redirect()->route($this->repository->setAdmin(true)->getActionRoute('listRoute'))->withFlashSuccess($this->createSuccessMessage);
     }
@@ -104,12 +101,10 @@ class AdminEntityController extends Controller
     public function edit($id, Request $request)
     {
         $event = $this->repository->findOrThrowException($id);
-        $users = $this->userModel->all()->pluck('name', 'id')->toArray();
-
+        
         return view($this->repository->setAdmin(true)->getModuleView('editView'))->with([
             'item'          => $event,
             'repository'    => $this->repository,
-             'users'        => $users
         ]);
     }
 
@@ -120,7 +115,9 @@ class AdminEntityController extends Controller
      */
     public function update($id, Request $request)
     {
-        $status = $this->repository->update($id, $request->all());
+        $input = $request->all();
+
+        $status = $this->repository->update($id, $input);
         
         return redirect()->route($this->repository->setAdmin(true)->getActionRoute('listRoute'))->withFlashSuccess($this->editSuccessMessage);
     }
@@ -146,31 +143,16 @@ class AdminEntityController extends Controller
     {
         return Datatables::of($this->repository->getForDataTable())
 		    ->escapeColumns(['title', 'sort'])
-            ->escapeColumns(['description', 'sort'])
-             ->addColumn('status', function ($event) 
-            {
-                return ($event->status == 1) ? 'Active' : 'InActive';
+            ->escapeColumns(['notes', 'sort'])
+            ->addColumn('additional_link', function ($item) {
+                return strlen($item->additional_link ) > 2 ? '<a target="_blank" href="' . $item->additional_link . '">Download</a>' : '-';
+            })
+            ->addColumn('status', function ($item) {
+                return $item->status == 1 ? 'Active' : 'InActive';
             })
             ->addColumn('actions', function ($event) {
                 return $event->admin_action_buttons;
             })
 		    ->make(true);
-    }
-
-    public function getAllByUserId(Request $request)
-    {
-        $entities = $this->repository->getByUserId($request->get('userId'));
-
-        if($entities)
-        {
-            return response()->json([
-                    'status'    => true,
-                    'funds'     => $entities
-                ]);
-        }
-
-        return response()->json([
-                'status'    => false
-        ]);
     }
 }

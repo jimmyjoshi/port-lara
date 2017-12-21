@@ -1,11 +1,11 @@
-<?php namespace App\Repositories\Entity;
+<?php namespace App\Repositories\Company;
 
-use App\Models\Entity\Entity;
+use App\Models\Company\Company;
 use App\Models\Access\User\User;
 use App\Repositories\DbRepository;
 use App\Exceptions\GeneralException;
 
-class EloquentEntityRepository extends DbRepository
+class EloquentCompanyRepository extends DbRepository
 {
 	/**
 	 * Event Model
@@ -19,7 +19,7 @@ class EloquentEntityRepository extends DbRepository
 	 * 
 	 * @var string
 	 */
-	public $moduleTitle = 'Entity';
+	public $moduleTitle = 'Company';
 
 	/**
 	 * Table Headers
@@ -28,11 +28,11 @@ class EloquentEntityRepository extends DbRepository
 	 */
 	public $tableHeaders = [
 		'title' 			=> 'Title',
-		'inception_date' 	=> 'Inception Date',
-		'asset_class' 		=> 'Asset Class',
-		'fund_size' 		=> 'Fund Size',
+		'username' 			=> 'User Name',
+		'amount' 			=> 'Amount',
+		'percentage' 		=> 'Percentage',
+		'notes' 			=> 'Note',
 		'status' 			=> 'Status',
-		'description' 		=> 'Description',
 		'actions' 			=> 'Actions'
 	];
 
@@ -48,35 +48,35 @@ class EloquentEntityRepository extends DbRepository
 			'searchable' 	=> true, 
 			'sortable'		=> true
 		],
-		'inception_date' => [
-			'data' 			=> 'inception_date',
-			'name' 			=> 'inception_date',
-			'searchable' 	=> false, 
-			'sortable'		=> false
-		],
-		'asset_class' => [
-			'data' 			=> 'asset_class',
-			'name' 			=> 'asset_class',
+		'username' => [
+			'data' 			=> 'username',
+			'name' 			=> 'username',
 			'searchable' 	=> true, 
 			'sortable'		=> true
 		],
-		'fund_size' => [
-			'data' 			=> 'fund_size',
-			'name' 			=> 'fund_size',
-			'searchable' 	=> false, 
-			'sortable'		=> false
+		'amount' => [
+			'data' 			=> 'amount',
+			'name' 			=> 'amount',
+			'searchable' 	=> true, 
+			'sortable'		=> true
+		],
+		'percentage' => [
+			'data' 			=> 'percentage',
+			'name' 			=> 'percentage',
+			'searchable' 	=> true, 
+			'sortable'		=> true
+		],
+		'notes' => [
+			'data' 			=> 'notes',
+			'name' 			=> 'notes',
+			'searchable' 	=> true, 
+			'sortable'		=> true
 		],
 		'status' => [
 			'data' 			=> 'status',
 			'name' 			=> 'status',
 			'searchable' 	=> false, 
 			'sortable'		=> false
-		],
-		'description' =>	[
-			'data' 			=> 'description',
-			'name' 			=> 'description',
-			'searchable' 	=> true, 
-			'sortable'		=> true
 		],
 		'actions' => [
 			'data' 			=> 'actions',
@@ -127,13 +127,13 @@ class EloquentEntityRepository extends DbRepository
 	 * @var array
 	 */
 	public $moduleRoutes = [
-		'listRoute' 	=> 'entities.index',
-		'createRoute' 	=> 'entities.create',
-		'storeRoute' 	=> 'entities.store',
-		'editRoute' 	=> 'entities.edit',
-		'updateRoute' 	=> 'entities.update',
-		'deleteRoute' 	=> 'entities.destroy',
-		'dataRoute' 	=> 'entities.get-list-data'
+		'listRoute' 	=> 'company.index',
+		'createRoute' 	=> 'company.create',
+		'storeRoute' 	=> 'company.store',
+		'editRoute' 	=> 'company.edit',
+		'updateRoute' 	=> 'company.update',
+		'deleteRoute' 	=> 'company.destroy',
+		'dataRoute' 	=> 'company.get-list-data'
 	];
 
 	/**
@@ -142,10 +142,10 @@ class EloquentEntityRepository extends DbRepository
 	 * @var array
 	 */
 	public $moduleViews = [
-		'listView' 		=> 'entity.index',
-		'createView' 	=> 'entity.create',
-		'editView' 		=> 'entity.edit',
-		'deleteView' 	=> 'entity.destroy',
+		'listView' 		=> 'company.index',
+		'createView' 	=> 'company.create',
+		'editView' 		=> 'company.edit',
+		'deleteView' 	=> 'company.destroy'
 	];
 
 	/**
@@ -154,7 +154,8 @@ class EloquentEntityRepository extends DbRepository
 	 */
 	public function __construct()
 	{
-		$this->model 		= new Entity;
+		$this->model 		= new Company;
+		$this->userModel 	= new User;
 	}
 
 	/**
@@ -167,6 +168,11 @@ class EloquentEntityRepository extends DbRepository
 	{
 		$input = $this->prepareInputData($input, true);
 		$model = $this->model->create($input);
+
+		$fundPercentage = ($input['amount'] * 100 ) / $model->fund->fund_size ;
+
+		$model->percentage = $fundPercentage;
+		$model->save();
 
 		if($model)
 		{
@@ -254,11 +260,11 @@ class EloquentEntityRepository extends DbRepository
     	return [
 			$this->model->getTable().'.id as id',
 			$this->model->getTable().'.title',
-			$this->model->getTable().'.description',
-			$this->model->getTable().'.inception_date',
-			$this->model->getTable().'.fund_size',
-			$this->model->getTable().'.asset_class',
-			$this->model->getTable().'.status'
+			$this->model->getTable().'.amount',
+			$this->model->getTable().'.percentage',
+			$this->model->getTable().'.notes',
+			$this->model->getTable().'.status',
+			$this->userModel->getTable().'.name as username'
 		];
     }
 
@@ -267,8 +273,8 @@ class EloquentEntityRepository extends DbRepository
      */
     public function getForDataTable()
     {
-    	return  $this->model->select($this->getTableFields())->get();
-        
+    	return  $this->model->select($this->getTableFields())
+    			->leftjoin($this->userModel->getTable(), $this->userModel->getTable().'.id', '=', $this->model->getTable().'.user_id')->get();
     }
 
     /**
@@ -292,32 +298,6 @@ class EloquentEntityRepository extends DbRepository
      */
     public function prepareInputData($input = array(), $isCreate = false)
     {
-    	if($isCreate)
-    	{
-    		$input = array_merge($input, ['user_id' => access()->user()->id]);
-    	}
-
-
-    	if(isset($input['ince']))
-    	{
-    		$input['start_date'] = date('Y-m-d', strtotime($input['start_date']));
-    	}
-
-    	if(isset($input['end_date']))
-    	{
-    		$input['end_date'] = date('Y-m-d', strtotime($input['end_date']));
-    	}
-
-    	if(! isset($input['start_date']))
-    	{
-    		$input['start_date'] = date('Y-m-d');
-    	}
-
-    	if(! isset($input['end_date']))
-    	{
-    		$input['end_date'] = date('Y-m-d');
-    	}
-
     	return $input;
     }
 
@@ -334,8 +314,6 @@ class EloquentEntityRepository extends DbRepository
     	}
 
     	$clientHeaders = $this->tableHeaders;
-
-    	unset($clientHeaders['username']);
 
     	return json_encode($this->setTableStructure($clientHeaders));
     }
@@ -354,18 +332,16 @@ class EloquentEntityRepository extends DbRepository
 
     	$clientColumns = $this->tableColumns;
 
-    	unset($clientColumns['username']);
-    	
     	return json_encode($this->setTableStructure($clientColumns));
     }
 
     /**
-     * Get By UserId
+     * Get All By UserId
      * 
      * @param int $userId
      * @return object
      */
-    public function getByUserId($userId = null)
+    public function getAllByUserId($userId = null)
     {
     	if($userId)
     	{

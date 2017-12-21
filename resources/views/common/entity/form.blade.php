@@ -1,5 +1,15 @@
 <div class="box-body">
     <div class="form-group">
+        {{ Form::label('user_id', 'Select User :', ['class' => 'col-lg-2 control-label']) }}
+
+        <div class="col-lg-10">
+            {{ Form::select('user_id', ['' => 'Select User'] + $users, null, ['class' => 'form-control', 'required' => 'required']) }}
+        </div>
+    </div>
+</div>
+
+<div class="box-body">
+    <div class="form-group">
         {{ Form::label('name', 'Entity Title :', ['class' => 'col-lg-2 control-label']) }}
 
         <div class="col-lg-10">

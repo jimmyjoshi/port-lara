@@ -44,6 +44,13 @@
                 </a>
             </li>
 
+             <li class="{{ active_class(Active::checkUriPattern('admin/company')) }}">
+                <a href="{{ route('admin.company.index') }}">
+                    <i class="fa fa-dashboard"></i>
+                    <span>Company Manager</span>
+                </a>
+            </li>
+
             <li class="{{ active_class(Active::checkUriPattern('admin/teams')) }}">
                 <a href="{{ route('admin.teams.index') }}">
                     <i class="fa fa-dashboard"></i>

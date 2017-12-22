@@ -14,6 +14,7 @@ use App\Repositories\Entity\EloquentEntityRepository;
 use App\Repositories\ToDo\EloquentToDoRepository;
 use App\Repositories\TaxDocument\EloquentTaxDocumentRepository;
 use App\Repositories\FinancialSummary\EloquentFinancialSummaryRepository;
+use App\Repositories\Company\EloquentCompanyRepository;
 
 class APIMasterController extends BaseApiController 
 {   
@@ -35,6 +36,7 @@ class APIMasterController extends BaseApiController
         $this->toDoRepository       = new EloquentToDoRepository;
         $this->taxRepository        = new EloquentTaxDocumentRepository;
         $this->financialRepository  = new EloquentFinancialSummaryRepository;
+        $this->companyRepository    = new EloquentCompanyRepository;
     }
 
    public function getDocumentCategories(Request $request)
@@ -207,7 +209,7 @@ class APIMasterController extends BaseApiController
         return $this->setStatusCode(400)->failureResponse($error, 'No ToDo Found !');         
     }
 
-     public function getAllFinancialStatments(Request $request)
+    public function getAllFinancialStatments(Request $request)
     {
         $user   = (object) $this->getApiUserInfo();
         $todos  = $this->financialRepository->getAll($user->userId);
@@ -224,5 +226,49 @@ class APIMasterController extends BaseApiController
         ];
 
         return $this->setStatusCode(400)->failureResponse($error, 'No ToDo Found !');         
+    }
+
+    public function getAllUserCompanies(Request $request)
+    {
+        $user       = (object) $this->getApiUserInfo();
+        $companies  = $this->companyRepository->getAllByUserId($user->userId);
+
+        if($companies && count($companies))
+        {
+            $responseData = $this->masterTransformer->allCompaniesTransform($companies);
+
+            return $this->successResponse($responseData);
+        }
+
+        $error = [
+            'reason' => 'Unable to find Company!'
+        ];
+
+        return $this->setStatusCode(400)->failureResponse($error, 'No Company Found !'); 
+    }
+
+    public function getFinancialSummary(Request $request)
+    {
+        $user               = (object) $this->getApiUserInfo();
+        $companies          = $this->companyRepository->getAllWithRelation();
+        $financialStatments  = $this->financialRepository->getAll($user->userId);
+        $taxDocuments       = $this->taxRepository->getAll($user->userId);
+
+        $companiesRespone = $this->masterTransformer->allCompaniesTransform($companies);
+        $financialsRespone = $this->masterTransformer->allFinancialSummaryTransform($financialStatments);
+        $taxRespone = $this->masterTransformer->allTaxDocumentsTransform($taxDocuments);
+
+        $responseData = [
+            'cashSummary'       => $companiesRespone,
+            'financialStatment' => $financialsRespone,
+            'taxDocuments'      => $taxRespone
+        ];
+
+        return $this->successResponse($responseData);
+    }
+
+    public function getAllCompanies()
+    {
+
     }
 }

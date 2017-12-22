@@ -170,5 +170,37 @@ class APIMasterTransformer extends Transformer
         return $response;
     }
 
-    
+    public function allCompaniesTransform($items)
+    {
+        $response   = [];
+        $totalCash  = 0;
+        $totalLabel = 'Total Cash';
+
+        if(isset($items) && count($items))
+        {
+            foreach($items as $item)   
+            {
+                $totalCash = $totalCash + $item->amount;
+
+                $response[] = [
+                    'companyId'             => (int) $item->id,
+                    'companyCategoryId'     => isset($item->company_category->id) ? (int) $item->company_category->id : 0,
+                    'fundId'                => isset($item->fund) ? (int) $item->fund->id : 0,
+                    'fundTitle'             => isset($item->fund) ? $item->fund->title : '',
+                    'companyCategoryTitle'  => isset($item->company_category) ? $item->company_category->title : '',
+                    'title'                 => $item->title,    
+                    'amount'                => $item->amount,
+                    'notes'                 => $item->notes,
+                    'status'                => $item->status ? $item->status : 1,
+                    'created'               => date('d-m-Y', strtotime($item->created_at))
+                ];
+            }
+        }
+
+        return [
+            'label'     => $totalLabel,
+            'totalCash' => $totalCash,
+            'companies' => $response
+        ];
+    }
 }

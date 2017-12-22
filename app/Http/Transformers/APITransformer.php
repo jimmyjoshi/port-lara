@@ -48,7 +48,7 @@ class APITransformer extends Transformer
         {
             foreach($members as $member)
             {
-                $response[] = [
+                $data = [
                     'memberId'          => (int) $member->id,
                     'title'             => $member->title,
                     'company'           => $member->company,
@@ -58,6 +58,16 @@ class APITransformer extends Transformer
                     'category'          => (int) $member->category,
                     'description'       => $member->description
                 ];
+
+
+                if($member->category == 1)
+                {
+                    $response['insideTeam'][] = $data;
+                }
+                else
+                {
+                    $response['outsideTeam'][] = $data;
+                }
             }
         }
         return $response;

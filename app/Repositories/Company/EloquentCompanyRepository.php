@@ -345,9 +345,19 @@ class EloquentCompanyRepository extends DbRepository
     {
     	if($userId)
     	{
-    		return $this->model->where('user_id', $userId)->get();
+    		return $this->model->with(['fund', 'company_category'])->where('user_id', $userId)->get();
     	}
 
     	return false;
+    }
+
+    /* Get All By UserId
+     * 
+     * @param int $userId
+     * @return object
+     */
+    public function getAllWithRelation()
+    {
+    	return $this->model->with(['fund', 'company_category'])->get();
     }
 }

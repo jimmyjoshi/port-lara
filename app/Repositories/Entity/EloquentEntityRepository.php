@@ -374,4 +374,12 @@ class EloquentEntityRepository extends DbRepository
 
     	return false;
     }
+
+    public function getFundById($userId = null, $fundId = null)
+    {
+    	if($userId && $fundId)
+    	{
+    		return $this->model->with('fund_companies')->where(['user_id' => $userId, 'id' => $fundId])->first();
+    	}
+    }
 }

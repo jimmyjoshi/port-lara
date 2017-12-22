@@ -57,4 +57,5 @@ Route::group(['namespace' => 'Api', 'middleware' => 'jwt.customauth'], function 
     Route::get('get-all-user-companies', 'APIMasterController@getAllUserCompanies')->name('api.get-all-user-companies');
 
     Route::get('get-financial-summary', 'APIMasterController@getFinancialSummary')->name('api.get-financial-summary');
+    Route::post('get-fund-details', 'APIMasterController@getFundById')->name('api.get-fund-details');
 });

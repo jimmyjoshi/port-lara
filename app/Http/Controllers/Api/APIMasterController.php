@@ -267,8 +267,25 @@ class APIMasterController extends BaseApiController
         return $this->successResponse($responseData);
     }
 
-    public function getAllCompanies()
+    public function getFundById(Request $request)
     {
+        if($request->get('fundId'))
+        {
+            $user   = (object) $this->getApiUserInfo();
+            $fund   = $this->entityRepository->getFundById($user->userId, $request->get('fundId'));
 
+            if(isset($fund) && count($fund))
+            {
+                $responseData = $this->masterTransformer->fundDetailsTransform($fund);
+
+                return $this->successResponse($responseData);
+            }
+        }
+
+        $error = [
+            'reason' => 'Unable to find Fund or Invalid Input !'
+        ];
+
+        return $this->setStatusCode(400)->failureResponse($error, 'No Fund Found or Invalid Input !'); 
     }
 }

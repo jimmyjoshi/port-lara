@@ -204,4 +204,39 @@ class APIMasterTransformer extends Transformer
             'companies' => $response
         ];
     }
+
+    public function fundDetailsTransform($fund)
+    {
+        $companyData = [];
+        $response    = [
+            'fundId'        => $fund->id,
+            'fundTitle'     => $fund->title,
+            'inceptionDate' => $fund->inception_date,
+            'assetClass'    => $fund->asset_class,
+            'fundSize'      => $fund->fund_size,
+            'description'   => $fund->description,
+            'totalInvested' => isset($fund->fund_companies) ? $fund->fund_companies->sum('amount') : 0,
+            'companies'     => $companyData
+        ];
+
+
+
+        if(isset($fund->fund_companies) && count($fund->fund_companies))
+        {
+            foreach($fund->fund_companies as $company)
+            {
+                $companyData[$company->company_category->title][] = [
+                        'companyCategoryId'     => $company->company_category->id,
+                        'companyId'             => $company->id,
+                        'companyTitle'          => $company->title,
+                        'amount'                => $company->amount,
+                        'percentage'            => $company->percentage,
+                    ];
+            }
+        }
+
+        $response['companies'] = $companyData;
+
+        return $response;
+    }
 }

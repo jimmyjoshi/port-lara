@@ -28,6 +28,7 @@ class EloquentEntityRepository extends DbRepository
 	 */
 	public $tableHeaders = [
 		'title' 			=> 'Title',
+		'username' 			=> 'User Name',
 		'inception_date' 	=> 'Inception Date',
 		'asset_class' 		=> 'Asset Class',
 		'fund_size' 		=> 'Fund Size',
@@ -45,6 +46,12 @@ class EloquentEntityRepository extends DbRepository
 		'title' => [
 			'data' 			=> 'title',
 			'name' 			=> 'title',
+			'searchable' 	=> true, 
+			'sortable'		=> true
+		],
+		'username' => [
+			'data' 			=> 'username',
+			'name' 			=> 'username',
 			'searchable' 	=> true, 
 			'sortable'		=> true
 		],
@@ -155,6 +162,7 @@ class EloquentEntityRepository extends DbRepository
 	public function __construct()
 	{
 		$this->model 		= new Entity;
+		$this->userModel	= new User;
 	}
 
 	/**
@@ -258,7 +266,8 @@ class EloquentEntityRepository extends DbRepository
 			$this->model->getTable().'.inception_date',
 			$this->model->getTable().'.fund_size',
 			$this->model->getTable().'.asset_class',
-			$this->model->getTable().'.status'
+			$this->model->getTable().'.status',
+			$this->userModel->getTable().'.name as username'
 		];
     }
 
@@ -267,7 +276,7 @@ class EloquentEntityRepository extends DbRepository
      */
     public function getForDataTable()
     {
-    	return  $this->model->select($this->getTableFields())->get();
+    	return  $this->model->select($this->getTableFields())->leftjoin($this->userModel->getTable(), $this->userModel->getTable().'.id', '=', $this->model->getTable().'.user_id')->get();
         
     }
 
@@ -292,32 +301,6 @@ class EloquentEntityRepository extends DbRepository
      */
     public function prepareInputData($input = array(), $isCreate = false)
     {
-    	if($isCreate)
-    	{
-    		$input = array_merge($input, ['user_id' => access()->user()->id]);
-    	}
-
-
-    	if(isset($input['ince']))
-    	{
-    		$input['start_date'] = date('Y-m-d', strtotime($input['start_date']));
-    	}
-
-    	if(isset($input['end_date']))
-    	{
-    		$input['end_date'] = date('Y-m-d', strtotime($input['end_date']));
-    	}
-
-    	if(! isset($input['start_date']))
-    	{
-    		$input['start_date'] = date('Y-m-d');
-    	}
-
-    	if(! isset($input['end_date']))
-    	{
-    		$input['end_date'] = date('Y-m-d');
-    	}
-
     	return $input;
     }
 

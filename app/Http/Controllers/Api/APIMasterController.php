@@ -12,6 +12,8 @@ use App\Repositories\DocumentCategory\EloquentDocumentCategoryRepository;
 use App\Repositories\Upload\EloquentUploadRepository;
 use App\Repositories\Entity\EloquentEntityRepository;
 use App\Repositories\ToDo\EloquentToDoRepository;
+use App\Repositories\TaxDocument\EloquentTaxDocumentRepository;
+use App\Repositories\FinancialSummary\EloquentFinancialSummaryRepository;
 
 class APIMasterController extends BaseApiController 
 {   
@@ -31,6 +33,8 @@ class APIMasterController extends BaseApiController
         $this->entityRepository     = new EloquentEntityRepository;
         $this->uploadRepository     = new EloquentUploadRepository;
         $this->toDoRepository       = new EloquentToDoRepository;
+        $this->taxRepository        = new EloquentTaxDocumentRepository;
+        $this->financialRepository  = new EloquentFinancialSummaryRepository;
     }
 
    public function getDocumentCategories(Request $request)
@@ -182,5 +186,43 @@ class APIMasterController extends BaseApiController
         ];
 
         return $this->setStatusCode(400)->failureResponse($error, 'Unable to Update ToDos !');    
+    }
+
+    public function getAllTaxDocuments(Request $request)
+    {
+        $user   = (object) $this->getApiUserInfo();
+        $todos  = $this->taxRepository->getAll($user->userId);
+
+        if($todos && count($todos))
+        {
+            $responseData = $this->masterTransformer->allTaxDocumentsTransform($todos);
+
+            return $this->successResponse($responseData);
+        }
+
+        $error = [
+            'reason' => 'Unable to find Tax Documents !'
+        ];
+
+        return $this->setStatusCode(400)->failureResponse($error, 'No ToDo Found !');         
+    }
+
+     public function getAllFinancialStatments(Request $request)
+    {
+        $user   = (object) $this->getApiUserInfo();
+        $todos  = $this->financialRepository->getAll($user->userId);
+
+        if($todos && count($todos))
+        {
+            $responseData = $this->masterTransformer->allFinancialSummaryTransform($todos);
+
+            return $this->successResponse($responseData);
+        }
+
+        $error = [
+            'reason' => 'Unable to find ToDos!'
+        ];
+
+        return $this->setStatusCode(400)->failureResponse($error, 'No ToDo Found !');         
     }
 }

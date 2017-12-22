@@ -125,4 +125,50 @@ class APIMasterTransformer extends Transformer
             'created'   => date('d-m-Y', strtotime($item->created_at))
         ];
     }
+
+    public function allTaxDocumentsTransform($items)
+    {
+        $response = [];
+
+        if(isset($items) && count($items))
+        {
+            foreach($items as $item)   
+            {
+                $response[] = [
+                    'taxDocumentId'     => (int) $item->id,
+                    'title'             => $item->title,
+                    'additional_link'   => $item->additional_link ? $item->additional_link : '',
+                    'notes'             => $item->notes,
+                    'status'            => $item->status ? $item->status : 1,
+                    'created'           => date('d-m-Y', strtotime($item->created_at))
+                ];
+            }
+        }
+
+        return $response;
+    }
+
+    public function allFinancialSummaryTransform($items)
+    {
+        $response = [];
+
+        if(isset($items) && count($items))
+        {
+            foreach($items as $item)   
+            {
+                $response[] = [
+                    'taxDocumentId'     => (int) $item->id,
+                    'title'             => $item->title,
+                    'additional_link'   => $item->additional_link ? $item->additional_link : '',
+                    'notes'             => $item->notes,
+                    'status'            => $item->status ? $item->status : 1,
+                    'created'           => date('d-m-Y', strtotime($item->created_at))
+                ];
+            }
+        }
+
+        return $response;
+    }
+
+    
 }

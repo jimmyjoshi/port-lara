@@ -137,7 +137,7 @@ class APIMasterTransformer extends Transformer
                 $response[] = [
                     'taxDocumentId'     => (int) $item->id,
                     'title'             => $item->title,
-                    'additional_link'   => $item->additional_link ? $item->additional_link : '',
+                    'additionalLink'    => $item->additional_link ? $item->additional_link : '',
                     'notes'             => $item->notes,
                     'status'            => $item->status ? $item->status : 1,
                     'created'           => date('d-m-Y', strtotime($item->created_at))
@@ -159,7 +159,7 @@ class APIMasterTransformer extends Transformer
                 $response[] = [
                     'taxDocumentId'     => (int) $item->id,
                     'title'             => $item->title,
-                    'additional_link'   => $item->additional_link ? $item->additional_link : '',
+                    'additionalLink'    => $item->additional_link ? $item->additional_link : '',
                     'notes'             => $item->notes,
                     'status'            => $item->status ? $item->status : 1,
                     'created'           => date('d-m-Y', strtotime($item->created_at))

@@ -190,6 +190,7 @@ class APIMasterTransformer extends Transformer
                     'companyCategoryTitle'  => isset($item->company_category) ? $item->company_category->title : '',
                     'title'                 => $item->title,    
                     'amount'                => $item->amount,
+                    'percentage'            => $item->percentage,
                     'notes'                 => $item->notes,
                     'status'                => $item->status ? $item->status : 1,
                     'created'               => date('d-m-Y', strtotime($item->created_at))

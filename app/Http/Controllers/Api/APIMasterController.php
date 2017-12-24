@@ -301,15 +301,21 @@ class APIMasterController extends BaseApiController
         
         $news   = simplexml_load_file(urlencode($url));
         $feeds  = [];
+        $i      = 0;
 
         foreach ($news->channel->item as $item) 
         {
+            if($i > 15)
+                break;
+
             $feeds[] = [
                 'title'         => (string) $item->title,
                 'link'          => (string) $item->link,
                 'categoryTitle' => (string) $item->category,
                 'description'   => strip_tags($item->description)
             ];
+
+            $i++;
         }
 
         return $this->successResponse($feeds);

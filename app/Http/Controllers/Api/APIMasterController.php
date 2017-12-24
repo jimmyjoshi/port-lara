@@ -288,4 +288,30 @@ class APIMasterController extends BaseApiController
 
         return $this->setStatusCode(400)->failureResponse($error, 'No Fund Found or Invalid Input !'); 
     }
+
+    public function getGoogleNews(Request $request)
+    {
+        $url        = 'https://news.google.com/news/rss/?gl=US&ned=us';
+        $keyword    = $request->get('keyword');
+
+        if(isset($keyword) && !empty($keyword))
+        {
+            $url = 'https://news.google.com/news/rss/search/section/q/' .$keyword. '/' .$keyword. '?hl=en&gl=US&ned=us'; 
+        }
+        
+        $news   = simplexml_load_file(urlencode($url));
+        $feeds  = [];
+
+        foreach ($news->channel->item as $item) 
+        {
+            $feeds[] = [
+                'title'         => (string) $item->title,
+                'link'          => (string) $item->link,
+                'categoryTitle' => (string) $item->category,
+                'description'   => strip_tags($item->description)
+            ];
+        }
+
+        return $this->successResponse($feeds);
+    }
 }

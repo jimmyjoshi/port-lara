@@ -58,4 +58,5 @@ Route::group(['namespace' => 'Api', 'middleware' => 'jwt.customauth'], function 
 
     Route::get('get-financial-summary', 'APIMasterController@getFinancialSummary')->name('api.get-financial-summary');
     Route::post('get-fund-details', 'APIMasterController@getFundById')->name('api.get-fund-details');
+    Route::any('get-news', 'APIMasterController@getGoogleNews')->name('api.get-google-news');   
 });

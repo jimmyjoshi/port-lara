@@ -308,11 +308,12 @@ class APIMasterController extends BaseApiController
             if($i > 15)
                 break;
 
-            $feeds[] = [
+            $description    = strip_tags($item->description);
+            $feeds[]        = [
                 'title'         => (string) $item->title,
                 'link'          => (string) $item->link,
                 'categoryTitle' => (string) $item->category,
-                'description'   => strip_tags($item->description)
+                'description'   => html_entity_decode($description)
             ];
 
             $i++;

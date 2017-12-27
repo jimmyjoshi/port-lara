@@ -207,26 +207,30 @@ class APIMasterTransformer extends Transformer
 
     public function fundDetailsTransform($fund)
     {
+        $notes       = [];
+        $documents   = [];
         $companyData = [];
+        $contacts    = [];
         $response    = [
-            'fundId'        => $fund->id,
+            'fundId'        => (int) $fund->id,
             'fundTitle'     => $fund->title,
-            'inceptionDate' => $fund->inception_date,
+            'inceptionDate' => date('d M y', strtotime($fund->inception_date)),
             'assetClass'    => $fund->asset_class,
             'fundSize'      => $fund->fund_size,
             'description'   => $fund->description,
             'totalInvested' => isset($fund->fund_companies) ? $fund->fund_companies->sum('amount') : 0,
-            'companies'     => $companyData
+            'companies'     => $companyData,
+            'contacts'      => $contacts,
+            'documents'     => $documents,
+            'notes'         => $notes
         ];
-
-
 
         if(isset($fund->fund_companies) && count($fund->fund_companies))
         {
             foreach($fund->fund_companies as $company)
             {
                 $companyData[$company->company_category->title][] = [
-                        'companyCategoryId'     => $company->company_category->id,
+                        'companyCategoryId'     => (int) $company->company_category->id,
                         'companyId'             => $company->id,
                         'companyTitle'          => $company->title,
                         'amount'                => $company->amount,
@@ -235,7 +239,50 @@ class APIMasterTransformer extends Transformer
             }
         }
 
-        $response['companies'] = $companyData;
+        if(isset($fund->fund_documents) && count($fund->fund_documents))
+        {
+            foreach($fund->fund_documents as $document)
+            {
+                $documents[] = [
+                        'documentId'        => (int) $document->id,
+                        'title'             => $document->title,
+                        'category'          => $document->amount,
+                        'additional_link'   => $document->additional_link,
+                        'description'       => $document->description
+                    ];
+            }
+        }
+
+        if(isset($fund->fund_notes) && count($fund->fund_notes))
+        {
+            foreach($fund->fund_notes as $note)
+            {
+                $notes[][] = [
+                        'noteId'        => (int) $note->id,
+                        'title'         => $note->title,
+                        'title_by'      => $note->title_by,
+                        'description'   => $note->description
+                    ];
+            }
+        }
+
+        if(isset($fund->fund_contacts) && count($fund->fund_contacts))
+        {
+            foreach($fund->fund_contacts as $contact)
+            {
+                $notes[][] = [
+                        'contactId'     => (int) $contact->id,
+                        'title'         => $contact->title,
+                        'company'       => $contact->company,
+                        'designation'   => $contact->designation
+                    ];
+            }
+        }
+
+        $response['companies']  = $companyData;
+        $response['contacts']   = $contacts;
+        $response['documents']  = $documents;
+        $response['notes']      = $notes;
 
         return $response;
     }

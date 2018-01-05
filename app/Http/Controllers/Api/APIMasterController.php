@@ -312,6 +312,7 @@ class APIMasterController extends BaseApiController
             $feeds[]        = [
                 'title'         => (string) $item->title,
                 'link'          => (string) $item->link,
+                'publicDate'    => date('d M, y', strtotime($item->pubDate)),
                 'categoryTitle' => (string) $item->category,
                 'description'   => html_entity_decode($description)
             ];

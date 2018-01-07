@@ -75,6 +75,34 @@ class APIMasterController extends BaseApiController
         return $this->setStatusCode(400)->failureResponse($error, 'No Document Category Found !'); 
    }
 
+    /**
+     * Get All Documents By CategoryId
+     * 
+     * @param Request $request
+     * @return json
+     */
+    public function getAllDocumentsByCategoryId(Request $request)
+    {
+        if($request->get('categoryId'))
+        {
+            $categories = $this->uploadRepository->getUploadsByCategoryId($request->get('categoryId'));
+
+            if($categories && count($categories))
+            {
+                $responseData = $this->masterTransformer->documentUploadTransform($categories);
+
+                return $this->successResponse($responseData);
+            }
+        }
+
+
+        $error = [
+            'reason' => 'Unable to find Documents!'
+        ];
+
+        return $this->setStatusCode(400)->failureResponse($error, 'No Documents Found !'); 
+    }
+
    public function getAllEntities(Request $request)
    {
         $entities = $this->entityRepository->getAll();

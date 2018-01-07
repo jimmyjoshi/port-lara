@@ -38,6 +38,12 @@ class APIMasterTransformer extends Transformer
         return $response;
     }
 
+    /**
+     * Document Upload Transform
+     * 
+     * @param object $uploads
+     * @return array
+     */
     public function documentUploadTransform($uploads)
     {
         $response = [];

@@ -329,4 +329,20 @@ class EloquentUploadRepository extends DbRepository
     	
     	return json_encode($this->setTableStructure($clientColumns));
     }
+
+    /**
+     * Get Uploads By CategoryId
+     * 
+     * @param int $categoryId
+     * @return object|mixed
+     */
+    public function getUploadsByCategoryId($categoryId = null)
+    {
+    	if($categoryId)
+    	{
+    		return $this->model->where('category_id', $categoryId)->get();
+    	}
+
+    	return false;
+    }
 }

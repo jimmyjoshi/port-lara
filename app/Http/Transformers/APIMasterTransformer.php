@@ -221,7 +221,7 @@ class APIMasterTransformer extends Transformer
             'fundId'        => (int) $fund->id,
             'fundTitle'     => $fund->title,
             'inceptionDate' => date('d M y', strtotime($fund->inception_date)),
-            'assetClass'    => $fund->asset_class,
+            'assetClass'    => (string) $fund->asset_class,
             'fundSize'      => $fund->fund_size,
             'description'   => $fund->description,
             'totalInvested' => isset($fund->fund_companies) ? $fund->fund_companies->sum('amount') : 0,

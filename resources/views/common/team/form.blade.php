@@ -8,7 +8,7 @@
     </div>
 </div>
 
-<div class="box-body">
+{{-- <div class="box-body">
     <div class="form-group">
         {{ Form::label('company', 'Company :', ['class' => 'col-lg-2 control-label']) }}
 
@@ -26,6 +26,66 @@
             {{ Form::text('designation', null, ['class' => 'form-control', 'placeholder' => 'Designation', 'required' => 'required']) }}
         </div>
     </div>
+</div> --}}
+
+<div class="box-body">
+    <div class="form-group">
+        {{ Form::label('address', 'Address :', ['class' => 'col-lg-2 control-label']) }}
+
+        <div class="col-lg-10">
+            {{ Form::text('address', null, ['class' => 'form-control', 'placeholder' => 'Address']) }}
+        </div>
+    </div>
+</div>
+
+<div class="box-body">
+    <div class="form-group">
+        {{ Form::label('city', 'Contact Number :', ['class' => 'col-lg-2 control-label']) }}
+
+        <div class="col-lg-10">
+            {{ Form::text('city', null, ['class' => 'form-control', 'placeholder' => 'City']) }}
+        </div>
+    </div>
+</div>
+
+<div class="box-body">
+    <div class="form-group">
+        {{ Form::label('zip', 'Zip Code :', ['class' => 'col-lg-2 control-label']) }}
+
+        <div class="col-lg-10">
+            {{ Form::text('zip', null, ['class' => 'form-control', 'placeholder' => 'Zip Code']) }}
+        </div>
+    </div>
+</div>
+
+<div class="box-body">
+    <div class="form-group">
+        {{ Form::label('star', 'Star :', ['class' => 'col-lg-2 control-label']) }}
+
+        <div class="col-lg-10">
+            {{ Form::number('star', null, ['class' => 'form-control', 'min' => 0, 'step' => 1]) }}
+        </div>
+    </div>
+</div>
+
+<div class="box-body">
+    <div class="form-group">
+        {{ Form::label('email_id', 'Email Id :', ['class' => 'col-lg-2 control-label']) }}
+
+        <div class="col-lg-10">
+            {{ Form::text('email_id', null, ['class' => 'form-control', 'placeholder' => 'Email Id']) }}
+        </div>
+    </div>
+</div>
+
+<div class="box-body">
+    <div class="form-group">
+        {{ Form::label('website', 'Website :', ['class' => 'col-lg-2 control-label']) }}
+
+        <div class="col-lg-10">
+            {{ Form::text('website', null, ['class' => 'form-control', 'placeholder' => 'Website']) }}
+        </div>
+    </div>
 </div>
 
 <div class="box-body">
@@ -38,7 +98,7 @@
     </div>
 </div>
 
-<div class="box-body">
+{{-- <div class="box-body">
     <div class="form-group">
         {{ Form::label('category', 'Select Category :', ['class' => 'col-lg-2 control-label']) }}
 
@@ -47,7 +107,7 @@
         </div>
     </div>
 </div>
-
+ --}}
 <div class="box-body">
     <div class="form-group">
         {{ Form::label('description', 'Description :', ['class' => 'col-lg-2 control-label']) }}

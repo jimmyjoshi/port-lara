@@ -292,4 +292,82 @@ class APIMasterTransformer extends Transformer
 
         return $response;
     }
+
+    public function getTeam($team)
+    {
+        $image = isset($team->profile_picture) ? $team->profile_picture : 'default.png';
+
+        return [
+            'teamId'            => (int) $team->id,
+            'teamTitle'         => $team->title,
+            'teamDescription'   => $team->description,
+            'teamAddress'       => $team->address,
+            'teamCity'          => $team->city,
+            'teamZip'           => $team->zip,
+            'teamImage'         => URL::to('/').'/uploads/team/'. $image,
+            'teamWebsite'       => $team->website,
+            'teamEmailId'       => $team->email_id
+        ];
+    }
+
+    public function getAllTeamMembers($members)
+    {
+        $response = [];
+
+        if(isset($members) && count($members))
+        {
+            foreach($members as $member)
+            {
+                $image = isset($member->profile_picture) ? $member->profile_picture : 'default.png';
+                $data = [
+                    'memberId'          => (int) $member->id,
+                    'teamId'            => (int) $member->team_id,
+                    'title'             => $member->title,
+                    'company'           => $member->company,
+                    'designation'       => $member->designation,
+                    'contact_number'    => $member->contact_number,
+                    'image'             => URL::to('/').'/uploads/team/'.$image,
+                    'category'          => (int) $member->category,
+                    'description'       => $member->description
+                ];
+
+
+                if($member->category == 1)
+                {
+                    $response['insideTeam'][] = $data;
+                }
+                else
+                {
+                    $response['outsideTeam'][] = $data;
+                }
+            }
+        }
+        return $response;
+    }
+
+    public function getGeneralTeamMembers($members)
+    {
+        $response = [];
+
+        if(isset($members) && count($members))
+        {
+            foreach($members as $member)
+            {
+                $image      = isset($member->profile_picture) ? $member->profile_picture : 'default.png';
+                $response[] = [
+                    'memberId'          => (int) $member->id,
+                    'teamId'            => (int) $member->team_id,
+                    'title'             => $member->title,
+                    'company'           => $member->company,
+                    'designation'       => $member->designation,
+                    'contact_number'    => $member->contact_number,
+                    'image'             => URL::to('/').'/uploads/team/'.$image,
+                    'category'          => (int) $member->category,
+                    'description'       => $member->description
+                ];
+
+            }
+        }
+        return $response;
+    }
 }

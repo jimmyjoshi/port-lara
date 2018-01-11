@@ -15,6 +15,7 @@ use App\Repositories\ToDo\EloquentToDoRepository;
 use App\Repositories\TaxDocument\EloquentTaxDocumentRepository;
 use App\Repositories\FinancialSummary\EloquentFinancialSummaryRepository;
 use App\Repositories\Company\EloquentCompanyRepository;
+use App\Repositories\TeamMember\EloquentTeamMemberRepository;
 
 class APIMasterController extends BaseApiController 
 {   
@@ -37,6 +38,8 @@ class APIMasterController extends BaseApiController
         $this->taxRepository        = new EloquentTaxDocumentRepository;
         $this->financialRepository  = new EloquentFinancialSummaryRepository;
         $this->companyRepository    = new EloquentCompanyRepository;
+        $this->teamMemberRepository = new EloquentTeamMemberRepository;
+        $this->teamRepository       = new EloquentTeamRepository;
     }
 
    public function getDocumentCategories(Request $request)
@@ -349,5 +352,49 @@ class APIMasterController extends BaseApiController
         }
 
         return $this->successResponse($feeds);
+    }
+
+    public function getAllTeamMembers(Request $request)
+    {
+        $members  = $this->teamMemberRepository->getAll();
+        
+        if($members && count($members))
+        {
+            $responseData = $this->masterTransformer->getAllTeamMembers($members);
+            return $this->successResponse($responseData);
+        }
+
+        $error = [
+            'reason' => 'Unable to find Team Members!'
+        ];
+
+        return $this->setStatusCode(400)->failureResponse($error, 'No Team Members Found !');
+    }
+
+    public function getTeamDetails(Request $request)
+    {
+        if($request->get('teamId'))
+        {
+            $team               = $this->teamRepository->getById($request->get('teamId'));
+
+            if($team)
+            {
+                $teamMembers        = $this->teamMemberRepository->getMembersByTeamId($request->get('teamId'));
+                $teamResponse       = $this->masterTransformer->getTeam($team);
+                $membersResponse    = $this->masterTransformer->getGeneralTeamMembers($teamMembers);
+
+                $data  =[
+                    'teamInfo'      => $teamResponse,
+                    'teamMembers'   => $membersResponse
+                ];
+                return $this->successResponse($data);
+            }
+        }
+
+        $error = [
+            'reason' => 'Unable to find Team!'
+        ];
+
+        return $this->setStatusCode(400)->failureResponse($error, 'No Team Found !');   
     }
 }

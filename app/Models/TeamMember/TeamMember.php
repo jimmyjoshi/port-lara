@@ -1,4 +1,4 @@
-<?php namespace App\Models\Team;
+<?php namespace App\Models\TeamMember;
 
 /**
  * Class Team
@@ -7,37 +7,31 @@
  */
 
 use App\Models\BaseModel;
-use App\Models\Team\Traits\Attribute\Attribute;
-use App\Models\Team\Traits\Relationship\Relationship;
+use App\Models\TeamMember\Traits\Attribute\Attribute;
+use App\Models\TeamMember\Traits\Relationship\Relationship;
 
-class Team extends BaseModel
+class TeamMember extends BaseModel
 {
     use Attribute, Relationship;
     /**
      * Database Table
      *
      */
-    protected $table = "data_teams";
+    protected $table = "data_teams_members";
 
     /**
      * Fillable Database Fields
      *
      */
     protected $fillable = [
+        'team_id',
         'title',
-        'company',
         'designation',
         'contact_number',
         'profile_picture',
         'category',
         'description',
-        'status',
-        'address',
-        'city',
-        'zip',
-        'star',
-        'email_id',
-        'website'
+        'status'
     ];
 
     /**

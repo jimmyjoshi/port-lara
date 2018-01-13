@@ -215,6 +215,7 @@ class APIMasterTransformer extends Transformer
     {
         $notes       = [];
         $documents   = [];
+        $toDoData   = [];
         $companyData = [];
         $contacts    = [];
         $response    = [
@@ -276,7 +277,7 @@ class APIMasterTransformer extends Transformer
         {
             foreach($fund->fund_contacts as $contact)
             {
-                $notes[][] = [
+                $contacts[][] = [
                         'contactId'     => (int) $contact->id,
                         'title'         => $contact->title,
                         'company'       => $contact->company,
@@ -285,9 +286,23 @@ class APIMasterTransformer extends Transformer
             }
         }
 
+         if(isset($fund->fund_todos) && count($fund->fund_todos)) {
+            foreach($fund->fund_todos as $item)   
+            {
+                $toDoData[] = [
+                    'toDoId'    => (int) $item->id,
+                    'title'     => $item->title,
+                    'notes'     => $item->notes,
+                    'status'    => $item->status ? $item->status : 1,
+                    'created'   => date('d-m-Y', strtotime($item->created_at))
+                ];
+            }
+        }
+
         $response['companies']  = $companyData;
         $response['contacts']   = $contacts;
         $response['documents']  = $documents;
+        $response['toDos']      = $toDos;
         $response['notes']      = $notes;
 
         return $response;

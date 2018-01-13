@@ -4,6 +4,7 @@ use App\Models\FundNote\FundNote;
 use App\Models\Company\Company;
 use App\Models\FundDocument\FundDocument;
 use App\Models\KeyContact\KeyContact;
+use App\Models\ToDo\ToDo;
 
 trait Relationship
 {
@@ -42,5 +43,14 @@ trait Relationship
 	public function fund_notes()
 	{
 	    return $this->hasMany(FundNote::class, 'fund_id');
+	}
+
+	/** HasMany
+	 *
+	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
+	 */
+	public function fund_todos()
+	{
+	    return $this->hasMany(ToDo::class, 'fund_id');
 	}
 }

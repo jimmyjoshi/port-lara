@@ -302,7 +302,7 @@ class APIMasterTransformer extends Transformer
         $response['companies']  = $companyData;
         $response['contacts']   = $contacts;
         $response['documents']  = $documents;
-        $response['toDos']      = $toDos;
+        $response['toDos']      = $toDoData;
         $response['notes']      = $notes;
 
         return $response;

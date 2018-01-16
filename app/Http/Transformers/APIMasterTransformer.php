@@ -213,12 +213,12 @@ class APIMasterTransformer extends Transformer
 
     public function fundDetailsTransform($fund)
     {
-        $notes       = [];
-        $documents   = [];
-        $toDoData   = [];
-        $companyData = [];
-        $contacts    = [];
-        $response    = [
+        $notes          = [];
+        $documents      = [];
+        $toDoData       = [];
+        $companyData    = [];
+        $contacts       = [];
+        $response       = [
             'fundId'        => (int) $fund->id,
             'fundTitle'     => $fund->title,
             'inceptionDate' => date('d M y', strtotime($fund->inception_date)),
@@ -264,7 +264,7 @@ class APIMasterTransformer extends Transformer
         {
             foreach($fund->fund_notes as $note)
             {
-                $notes[][] = [
+                $notes[] = [
                         'noteId'        => (int) $note->id,
                         'title'         => $note->title,
                         'title_by'      => $note->title_by,
@@ -277,7 +277,7 @@ class APIMasterTransformer extends Transformer
         {
             foreach($fund->fund_contacts as $contact)
             {
-                $contacts[][] = [
+                $contacts[] = [
                         'contactId'     => (int) $contact->id,
                         'title'         => $contact->title,
                         'company'       => $contact->company,

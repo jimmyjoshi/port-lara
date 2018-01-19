@@ -268,7 +268,8 @@ class APIMasterTransformer extends Transformer
                         'noteId'        => (int) $note->id,
                         'title'         => $note->title,
                         'title_by'      => $note->title_by,
-                        'description'   => $note->description
+                        'description'   => $note->description,
+                        'noteDate'      => date('d M y', strtotime($note->created_at))
                     ];
             }
         }

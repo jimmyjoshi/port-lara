@@ -214,6 +214,7 @@ class APIMasterTransformer extends Transformer
     public function fundDetailsTransform($fund)
     {
         $notes          = [];
+        $graphData      = [];
         $documents      = [];
         $toDoData       = [];
         $companyData    = [];
@@ -245,6 +246,47 @@ class APIMasterTransformer extends Transformer
                     ];
             }
         }
+
+
+        if($companyData && count($companyData))
+        {
+            $sr = 0;
+            foreach($companyData as $key => $array)
+            {
+                $total = 0; 
+                
+                foreach($array as $subCompany)   
+                {
+                    $total = $total + $subCompany['amount'];
+                }
+
+                $percentage =  ( $total * 100 ) / $fund->fund_size;
+
+                $graphData[] = [
+                    'title'         => $key,
+                    'subTitle'      => 'Investor',
+                    'percentage'    => $percentage,
+                    'totalInvested' => $total
+                ];
+
+            }
+        }
+
+       /* if(isset($fund->fund_companies) && count($fund->fund_companies))
+        {
+            foreach($fund->fund_companies as $company)
+            {
+
+                $graphData[] = [
+
+                        'companyCategoryId'     => (int) $company->company_category->id,
+                        'companyId'             => $company->id,
+                        'companyTitle'          => $company->title,
+                        'amount'                => $company->amount,
+                        'percentage'            => $company->percentage,
+                    ];
+            }
+        }*/
 
         if(isset($fund->fund_documents) && count($fund->fund_documents))
         {
@@ -305,6 +347,8 @@ class APIMasterTransformer extends Transformer
         $response['documents']  = $documents;
         $response['toDos']      = $toDoData;
         $response['notes']      = $notes;
+        $response['graphData']  = $graphData;
+
 
         return $response;
     }

@@ -219,6 +219,18 @@ class APIMasterTransformer extends Transformer
         $toDoData       = [];
         $companyData    = [];
         $contacts       = [];
+        $colors         = [
+            '#FFFFFF',
+            '#000000',
+            '#FF0000',
+            '#800000',
+            '#FFFF00',
+            '#2E86C1',
+            '#9B59B6',
+            '#F39C12',
+            '#797D7F',
+            '#78281F',
+        ];
         $response       = [
             'fundId'        => (int) $fund->id,
             'fundTitle'     => $fund->title,
@@ -266,9 +278,10 @@ class APIMasterTransformer extends Transformer
                     'title'         => $key,
                     'subTitle'      => 'Investor',
                     'percentage'    => $percentage,
+                    'color'         => $colors[$sr],
                     'totalInvested' => $total
                 ];
-
+                $sr++;
             }
         }
 

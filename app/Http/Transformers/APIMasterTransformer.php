@@ -220,7 +220,6 @@ class APIMasterTransformer extends Transformer
         $companyData    = [];
         $contacts       = [];
         $colors         = [
-            '#FFFFFF',
             '#000000',
             '#FF0000',
             '#800000',

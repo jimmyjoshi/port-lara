@@ -308,7 +308,7 @@ class APIMasterTransformer extends Transformer
                         'documentId'        => (int) $document->id,
                         'title'             => $document->title,
                         'category'          => $document->amount,
-                        'additional_link'   => $document->additional_link,
+                        'additional_link'   => isset($document->additional_link) ? $document->additional_link : '',
                         'description'       => $document->description
                     ];
             }

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Yajra\Datatables\Facades\Datatables;
 use App\Models\Entity\Entity;
+use App\Models\Company\Company;
 use App\Repositories\KeyContact\EloquentKeyContactRepository;
 
 /**
@@ -50,6 +51,7 @@ class AdminKeyContactController extends Controller
 	{
         $this->repository       = new EloquentKeyContactRepository;
         $this->entityRepository = new Entity;
+        $this->companyModel     = new Company;
 	}
 
     /**
@@ -76,11 +78,13 @@ class AdminKeyContactController extends Controller
      */
     public function create(Request $request)
     {
-        $entities = $this->entityRepository->all()->pluck('title', 'id')->toArray();
+        $entities   = $this->entityRepository->all()->pluck('title', 'id')->toArray();
+        $companies  = $this->companyModel->all()->pluck('title', 'id')->toArray();
 
         return view($this->repository->setAdmin(true)->getModuleView('createView'))->with([
             'repository'    => $this->repository,
-            'entities'      => $entities
+            'entities'      => $entities,
+            'companies'     => $companies
         ]);
     }
 
@@ -107,11 +111,13 @@ class AdminKeyContactController extends Controller
     {
         $event      = $this->repository->findOrThrowException($id);
         $entities   = $this->entityRepository->all()->pluck('title', 'id')->toArray();
+        $companies  = $this->companyModel->all()->pluck('title', 'id')->toArray();
 
         return view($this->repository->setAdmin(true)->getModuleView('editView'))->with([
             'item'          => $event,
             'repository'    => $this->repository,
-            'entities'      => $entities
+            'entities'      => $entities,
+            'companies'     => $companies
         ]);
     }
 

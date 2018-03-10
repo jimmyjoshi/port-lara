@@ -1,9 +1,9 @@
 <div class="box-body">
     <div class="form-group">
-        {{ Form::label('fund_id', 'Select Fund :', ['class' => 'col-lg-2 control-label']) }}
+        {{ Form::label('company_id', 'Select Company :', ['class' => 'col-lg-2 control-label']) }}
 
         <div class="col-lg-10">
-            {{ Form::select('fund_id', ['' => 'Select Fund'] + $entities, null, ['class' => 'form-control', 'required' => 'required']) }}
+            {{ Form::select('company_id', ['' => 'Select Company'] + $companies, null, ['class' => 'form-control', 'required' => 'required']) }}
         </div>
     </div>
 </div>

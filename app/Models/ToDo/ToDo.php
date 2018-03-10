@@ -25,6 +25,7 @@ class ToDo extends BaseModel
      */
     protected $fillable = [
         'user_id',
+        'company_id',
         'title',
         'notes',
         'status'

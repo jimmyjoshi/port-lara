@@ -4,12 +4,12 @@ Route::group([
     'namespace'  => 'FundNote',
 ], function () {
 
-    Route::get('fund-notes/get', 'AdminFundNoteController@getTableData')->name('fund-notes.get-list-data');
+    Route::get('company-notes/get', 'AdminFundNoteController@getTableData')->name('company-notes.get-list-data');
     
     /*
-     * Admin Fund Note
+     * Admin Company Note
      */
-    Route::resource('fund-notes', 'AdminFundNoteController');
+    Route::resource('company-notes', 'AdminFundNoteController');
 
-    Route::get('fund-notes/', 'AdminFundNoteController@index')->name('fund-notes.index');
+    Route::get('company-notes/', 'AdminFundNoteController@index')->name('company-notes.index');
 });

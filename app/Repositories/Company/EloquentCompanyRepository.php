@@ -360,4 +360,12 @@ class EloquentCompanyRepository extends DbRepository
     {
     	return $this->model->with(['fund', 'company_category'])->get();
     }
+
+    public function getCompanyById($userId = null, $companyId = null)
+    {
+    	if($userId && $companyId)
+    	{	
+    		return $this->model->with(['fund', 'company_documents', 'company_contacts', 'company_notes', 'company_todos'])->where('id', $companyId)->first();
+    	}
+    }
 }

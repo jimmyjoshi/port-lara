@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use Yajra\Datatables\Facades\Datatables;
 use App\Repositories\ToDo\EloquentToDoRepository;
 use App\Models\Access\User\User;
+use App\Models\Company\Company;
 
 
 /**
@@ -27,21 +28,21 @@ class AdminToDoController extends Controller
      * 
      * @var string
      */
-    protected $createSuccessMessage = "ToDo Created Successfully!";
+    protected $createSuccessMessage = "Company ToDo Created Successfully!";
 
     /**
      * Edit Success Message
      * 
      * @var string
      */
-    protected $editSuccessMessage = "ToDo Edited Successfully!";
+    protected $editSuccessMessage = "Company ToDo Edited Successfully!";
 
     /**
      * Delete Success Message
      * 
      * @var string
      */
-    protected $deleteSuccessMessage = "ToDo Deleted Successfully";
+    protected $deleteSuccessMessage = "Company ToDo Deleted Successfully";
 
 	/**
 	 * __construct
@@ -51,6 +52,7 @@ class AdminToDoController extends Controller
 	{
         $this->repository   = new EloquentToDoRepository;
         $this->userModel    = new User;
+        $this->companyModel = new Company;
 	}
 
     /**
@@ -77,11 +79,13 @@ class AdminToDoController extends Controller
      */
     public function create(Request $request)
     {
-        $users = $this->userModel->all()->pluck('name', 'id')->toArray();
+        $users      = $this->userModel->all()->pluck('name', 'id')->toArray();
+        $companies  = $this->companyModel->all()->pluck('title', 'id')->toArray();
 
         return view($this->repository->setAdmin(true)->getModuleView('createView'))->with([
             'repository' => $this->repository,
-            'users'      => $users
+            'users'      => $users,
+            'companies'  => $companies
         ]);
     }
 
@@ -115,11 +119,13 @@ class AdminToDoController extends Controller
     {
         $event = $this->repository->findOrThrowException($id);
         $users = $this->userModel->all()->pluck('name', 'id')->toArray();
+        $companies  = $this->companyModel->all()->pluck('title', 'id')->toArray();
 
         return view($this->repository->setAdmin(true)->getModuleView('editView'))->with([
             'item'          => $event,
             'repository'    => $this->repository,
-            'users'         => $users
+            'users'         => $users,
+            'companies'     => $companies
         ]);
     }
 

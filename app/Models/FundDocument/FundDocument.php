@@ -24,7 +24,7 @@ class FundDocument extends BaseModel
      *
      */
     protected $fillable = [
-        'fund_id',
+        'company_id',
         'title',
         'category',
         'additional_link',

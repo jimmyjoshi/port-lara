@@ -298,6 +298,28 @@ class APIMasterController extends BaseApiController
         return $this->successResponse($responseData);
     }
 
+    public function getCompanyById(Request $request)
+    {
+        if($request->get('companyId'))
+        {
+            $user       = (object) $this->getApiUserInfo();
+            $company    = $this->companyRepository->getCompanyById($user->userId, $request->get('companyId'));
+            
+            if(isset($company) && count($company))
+            {
+                $responseData = $this->masterTransformer->companyDetailsTransform($company);
+
+                return $this->successResponse($responseData);
+            }
+        }
+
+        $error = [
+            'reason' => 'Unable to find Company or Invalid Input !'
+        ];
+
+        return $this->setStatusCode(400)->failureResponse($error, 'No Company Found or Invalid Input !'); 
+    }
+
     public function getFundById(Request $request)
     {
         if($request->get('fundId'))

@@ -2,6 +2,7 @@
 
 use App\Models\ToDo\ToDo;
 use App\Models\Access\User\User;
+use App\Models\Company\Company;
 use App\Repositories\DbRepository;
 use App\Exceptions\GeneralException;
 
@@ -19,7 +20,7 @@ class EloquentToDoRepository extends DbRepository
 	 * 
 	 * @var string
 	 */
-	public $moduleTitle = 'ToDo';
+	public $moduleTitle = 'Company ToDo';
 
 	/**
 	 * Table Headers
@@ -28,6 +29,7 @@ class EloquentToDoRepository extends DbRepository
 	 */
 	public $tableHeaders = [
 		'title' 			=> 'Title',
+		'company_title' 	=> 'Company Name',
 		'username' 			=> 'User Name',
 		'notes' 			=> 'Note',
 		'status' 			=> 'Status',
@@ -43,6 +45,12 @@ class EloquentToDoRepository extends DbRepository
 		'title' => [
 			'data' 			=> 'title',
 			'name' 			=> 'title',
+			'searchable' 	=> true, 
+			'sortable'		=> true
+		],
+		'company_title' => [
+			'data' 			=> 'company_title',
+			'name' 			=> 'company_title',
 			'searchable' 	=> true, 
 			'sortable'		=> true
 		],
@@ -142,6 +150,7 @@ class EloquentToDoRepository extends DbRepository
 	{
 		$this->model 		= new ToDo;
 		$this->userModel 	= new User;
+		$this->companyModel	= new Company;
 	}
 
 	/**
@@ -243,7 +252,8 @@ class EloquentToDoRepository extends DbRepository
 			$this->model->getTable().'.title',
 			$this->model->getTable().'.notes',
 			$this->model->getTable().'.status',
-			$this->userModel->getTable().'.name as username'
+			$this->userModel->getTable().'.name as username',
+			$this->companyModel->getTable().'.title as company_title'
 		];
     }
 
@@ -253,7 +263,9 @@ class EloquentToDoRepository extends DbRepository
     public function getForDataTable()
     {
     	return  $this->model->select($this->getTableFields())
-    			->leftjoin($this->userModel->getTable(), $this->userModel->getTable().'.id', '=', $this->model->getTable().'.user_id')->get();
+    			->leftjoin($this->userModel->getTable(), $this->userModel->getTable().'.id', '=', $this->model->getTable().'.user_id')
+    			->leftjoin($this->companyModel->getTable(), $this->companyModel->getTable().'.id', '=', $this->model->getTable().'.company_id')
+    			->get();
     }
 
     /**

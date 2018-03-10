@@ -4,12 +4,12 @@ Route::group([
     'namespace'  => 'FundDocument',
 ], function () {
 
-    Route::get('fund-documents/get', 'AdminFundDocumentController@getTableData')->name('fund-documents.get-list-data');
+    Route::get('company-documents/get', 'AdminFundDocumentController@getTableData')->name('company-documents.get-list-data');
     
     /*
      * Admin Fund Note
      */
-    Route::resource('fund-documents', 'AdminFundDocumentController');
+    Route::resource('company-documents', 'AdminFundDocumentController');
 
-    Route::get('fund-documents/', 'AdminFundDocumentController@index')->name('fund-documents.index');
+    Route::get('company-documents/', 'AdminFundDocumentController@index')->name('company-documents.index');
 });

@@ -3,6 +3,7 @@
 use App\Models\KeyContact\KeyContact;
 use App\Models\Access\User\User;
 use App\Models\Entity\Entity;
+use App\Models\Company\Company;
 use App\Repositories\DbRepository;
 use App\Exceptions\GeneralException;
 
@@ -29,7 +30,7 @@ class EloquentKeyContactRepository extends DbRepository
 	 */
 	public $tableHeaders = [
 		'title' 			=> 'Title',
-		'fund_title' 		=> 'Fund Name',
+		'company_title'		=> 'Company Name',
 		'designation' 		=> 'Designation',
 		'contact_number' 	=> 'Contact Number',
 		'email_id' 			=> 'Email Id',
@@ -49,9 +50,9 @@ class EloquentKeyContactRepository extends DbRepository
 			'searchable' 	=> true, 
 			'sortable'		=> true
 		],
-		'fund_title' => [
-			'data' 			=> 'fund_title',
-			'name' 			=> 'fund_title',
+		'company_title' => [
+			'data' 			=> 'company_title',
+			'name' 			=> 'company_title',
 			'searchable' 	=> true, 
 			'sortable'		=> true
 		],
@@ -157,6 +158,7 @@ class EloquentKeyContactRepository extends DbRepository
 	{
 		$this->model 		= new KeyContact;
 		$this->entityModel 	= new Entity;
+		$this->companyModel = new Company;
 	}
 
 	/**
@@ -261,7 +263,7 @@ class EloquentKeyContactRepository extends DbRepository
 			$this->model->getTable().'.email_id',
 			$this->model->getTable().'.description',
 			$this->model->getTable().'.status',
-			$this->entityModel->getTable().'.title as fund_title',
+			$this->companyModel->getTable().'.title as company_title',
 		];
     }
 
@@ -271,8 +273,7 @@ class EloquentKeyContactRepository extends DbRepository
     public function getForDataTable()
     {
     	return  $this->model->select($this->getTableFields())
-    			->leftjoin($this->entityModel->getTable(), $this->entityModel->getTable().'.id', '=', $this->model->getTable().'.fund_id')->get();
-        
+    			->leftjoin($this->companyModel->getTable(), $this->companyModel->getTable().'.id', '=', $this->model->getTable().'.company_id')->get();
     }
 
     /**

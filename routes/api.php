@@ -60,6 +60,7 @@ Route::group(['namespace' => 'Api', 'middleware' => 'jwt.customauth'], function 
 
     Route::get('get-financial-summary', 'APIMasterController@getFinancialSummary')->name('api.get-financial-summary');
     Route::post('get-fund-details', 'APIMasterController@getFundById')->name('api.get-fund-details');
+    Route::post('get-company-details', 'APIMasterController@getCompanyById')->name('api.get-company-details');
     Route::post('get-documents-by-category', 'APIMasterController@getAllDocumentsByCategoryId')->name('api.get-documents-by-category');
     
     Route::any('get-news', 'APIMasterController@getGoogleNews')->name('api.get-google-news');   

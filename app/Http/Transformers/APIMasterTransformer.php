@@ -211,6 +211,167 @@ class APIMasterTransformer extends Transformer
         ];
     }
 
+
+    public function companyDetailsTransform($masterCompany)
+    {
+        $notes          = [];
+        $graphData      = [];
+        $documents      = [];
+        $toDoData       = [];
+        $companyData    = [];
+        $contacts       = [];
+        $colors         = [
+            '#000000',
+            '#FF0000',
+            '#800000',
+            '#FFFF00',
+            '#2E86C1',
+            '#9B59B6',
+            '#F39C12',
+            '#797D7F',
+            '#78281F',
+        ];
+        $response       = [
+            'companyId'     => (int) $masterCompany->id,
+            'CompanyTitle'  => $masterCompany->title,
+            'CompanyInvestment'  => $masterCompany->amount,
+            'CompanyInvestmentPercentage'  => number_format($masterCompany->amount * 100 / $masterCompany->fund->fund_size, 2),
+            'fundTitle'     => $masterCompany->fund->title,
+            'inceptionDate' => date('d M y', strtotime($masterCompany->fund->inception_date)),
+            'assetClass'    => (string) $masterCompany->fund->asset_class,
+            'fundSize'      => $masterCompany->fund->fund_size,
+            'description'   => $masterCompany->fund->description,
+            'totalInvested' => isset($masterCompany->fund->fund_companies) ? $masterCompany->fund->fund_companies->sum('amount') : 0,
+            'companies'     => $companyData,
+            'contacts'      => $contacts,
+            'documents'     => $documents,
+            'notes'         => $notes
+        ];
+
+
+
+
+        if(isset($masterCompany->fund->fund_companies) && count($masterCompany->fund->fund_companies))
+        {
+            foreach($masterCompany->fund->fund_companies as $company)
+            {
+                $companyData[$company->company_category->title][] = [
+                        'companyCategoryId'     => (int) $company->company_category->id,
+                        'companyId'             => $company->id,
+                        'companyTitle'          => $company->title,
+                        'amount'                => $company->amount,
+                        'percentage'            => $company->percentage,
+                    ];
+            }
+        }
+
+        if($companyData && count($companyData))
+        {
+            $sr = 0;
+            foreach($companyData as $key => $array)
+            {
+                $total = 0; 
+                
+                foreach($array as $subCompany)   
+                {
+                    $total = $total + $subCompany['amount'];
+                }
+
+                $percentage =  ( $total * 100 ) / $masterCompany->fund->fund_size;
+
+                $graphData[] = [
+                    'title'         => $key,
+                    'subTitle'      => 'Investor',
+                    'percentage'    => $percentage,
+                    'color'         => $colors[$sr],
+                    'totalInvested' => $total
+                ];
+                $sr++;
+            }
+        }
+
+
+       if(isset($masterCompany->fund->fund_companies) && count($masterCompany->fund->fund_companies))
+        {
+            foreach($masterCompany->fund->fund_companies as $company)
+            {
+
+                $graphData[] = [
+
+                        'companyCategoryId'     => (int) $company->company_category->id,
+                        'companyId'             => $company->id,
+                        'companyTitle'          => $company->title,
+                        'amount'                => $company->amount,
+                        'percentage'            => $company->percentage,
+                    ];
+            }
+        }
+
+        if(isset($masterCompany->company_documents) && count($masterCompany->company_documents))
+        {
+            foreach($masterCompany->company_documents as $document)
+            {
+                $documents[] = [
+                        'documentId'        => (int) $document->id,
+                        'title'             => $document->title,
+                        'category'          => isset($document->category) ? $document->category : '',
+                        'additional_link'   => isset($document->additional_link) ? $document->additional_link : '',
+                        'description'       => $document->description
+                    ];
+            }
+        }
+
+        if(isset($masterCompany->company_notes) && count($masterCompany->company_notes))
+        {
+            foreach($masterCompany->company_notes as $note)
+            {
+                $notes[] = [
+                        'noteId'        => (int) $note->id,
+                        'title'         => $note->title,
+                        'title_by'      => $note->title_by,
+                        'description'   => $note->description,
+                        'noteDate'      => date('d-m-Y', strtotime($note->created_at))
+                    ];
+            }
+        }
+
+        if(isset($masterCompany->company_contacts) && count($masterCompany->company_contacts))
+        {
+            foreach($masterCompany->company_contacts as $contact)
+            {
+                $contacts[] = [
+                        'contactId'     => (int) $contact->id,
+                        'title'         => $contact->title,
+                        'company'       => $contact->company,
+                        'designation'   => $contact->designation
+                    ];
+            }
+        }
+
+         if(isset($masterCompany->company_todos) && count($masterCompany->company_todos)) {
+            foreach($masterCompany->company_todos as $item)   
+            {
+                $toDoData[] = [
+                    'toDoId'    => (int) $item->id,
+                    'title'     => $item->title,
+                    'notes'     => $item->notes,
+                    'status'    => $item->status ? $item->status : 1,
+                    'created'   => date('d-m-Y', strtotime($item->created_at))
+                ];
+            }
+        }
+
+        $response['companies']  = $companyData;
+        $response['contacts']   = $contacts;
+        $response['documents']  = $documents;
+        $response['toDos']      = $toDoData;
+        $response['notes']      = $notes;
+        $response['graphData']  = $graphData;
+
+
+        return $response;
+    }
+
     public function fundDetailsTransform($fund)
     {
         $notes          = [];
@@ -300,7 +461,7 @@ class APIMasterTransformer extends Transformer
             }
         }*/
 
-        if(isset($fund->fund_documents) && count($fund->fund_documents))
+        /*if(isset($fund->fund_documents) && count($fund->fund_documents))
         {
             foreach($fund->fund_documents as $document)
             {
@@ -352,7 +513,7 @@ class APIMasterTransformer extends Transformer
                     'created'   => date('d-m-Y', strtotime($item->created_at))
                 ];
             }
-        }
+        }*/
 
         $response['companies']  = $companyData;
         $response['contacts']   = $contacts;

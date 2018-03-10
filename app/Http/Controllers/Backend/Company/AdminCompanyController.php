@@ -120,7 +120,7 @@ class AdminCompanyController extends Controller
         $entities   = $this->entity->all()->pluck('title', 'id')->toArray();
 
 
-        return view($this->repository->setAdmin(true)->getModuleView('createView'))->with([
+        return view($this->repository->setAdmin(true)->getModuleView('editView'))->with([
              'item'         => $event,
             'repository'    => $this->repository,
             'users'         => $users,

@@ -24,7 +24,7 @@ class FundNote extends BaseModel
      *
      */
     protected $fillable = [
-        'fund_id',
+        'company_id',
         'title',
         'title_by',
         'description',

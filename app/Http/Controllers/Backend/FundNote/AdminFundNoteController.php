@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Yajra\Datatables\Facades\Datatables;
 use App\Models\Entity\Entity;
+use App\Models\Company\Company;
 use App\Repositories\FundNote\EloquentFundNoteRepository;
 
 /**
@@ -26,21 +27,21 @@ class AdminFundNoteController extends Controller
      * 
      * @var string
      */
-    protected $createSuccessMessage = "Entity Note Created Successfully!";
+    protected $createSuccessMessage = "Company Note Created Successfully!";
 
     /**
      * Edit Success Message
      * 
      * @var string
      */
-    protected $editSuccessMessage = "Entity Note Edited Successfully!";
+    protected $editSuccessMessage = "Company Note Edited Successfully!";
 
     /**
      * Delete Success Message
      * 
      * @var string
      */
-    protected $deleteSuccessMessage = "Entity Note Deleted Successfully";
+    protected $deleteSuccessMessage = "Company Note Deleted Successfully";
 
 	/**
 	 * __construct
@@ -50,6 +51,7 @@ class AdminFundNoteController extends Controller
 	{
         $this->repository       = new EloquentFundNoteRepository;
         $this->entityRepository = new Entity;
+        $this->companyModel     = new Company;
 	}
 
     /**
@@ -76,11 +78,13 @@ class AdminFundNoteController extends Controller
      */
     public function create(Request $request)
     {
-        $entities = $this->entityRepository->all()->pluck('title', 'id')->toArray();
+        $entities   = $this->entityRepository->all()->pluck('title', 'id')->toArray();
+        $companies  = $this->companyModel->all()->pluck('title', 'id')->toArray();
 
         return view($this->repository->setAdmin(true)->getModuleView('createView'))->with([
             'repository'    => $this->repository,
-            'entities'      => $entities
+            'entities'      => $entities,
+            'companies'     => $companies
         ]);
     }
 
@@ -107,11 +111,13 @@ class AdminFundNoteController extends Controller
     {
         $event      = $this->repository->findOrThrowException($id);
         $entities   = $this->entityRepository->all()->pluck('title', 'id')->toArray();
+        $companies  = $this->companyModel->all()->pluck('title', 'id')->toArray();
 
         return view($this->repository->setAdmin(true)->getModuleView('editView'))->with([
             'item'          => $event,
             'repository'    => $this->repository,
-            'entities'      => $entities
+            'entities'      => $entities,
+            'companies'     => $companies
         ]);
     }
 

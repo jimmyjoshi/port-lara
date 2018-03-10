@@ -10,6 +10,17 @@
 
 <div class="box-body">
     <div class="form-group">
+        {{ Form::label('company_id', 'Select Company :', ['class' => 'col-lg-2 control-label']) }}
+
+        <div class="col-lg-10">
+            {{ Form::select('company_id', ['' => 'Select Company'] + $companies, null, ['class' => 'form-control', 'required' => 'required']) }}
+        </div>
+    </div>
+</div>
+
+
+<div class="box-body">
+    <div class="form-group">
         {{ Form::label('title', 'Name :', ['class' => 'col-lg-2 control-label']) }}
 
         <div class="col-lg-10">

@@ -3,6 +3,7 @@
 use App\Models\FundDocument\FundDocument;
 use App\Models\Access\User\User;
 use App\Models\Entity\Entity;
+use App\Models\Company\Company;
 use App\Repositories\DbRepository;
 use App\Exceptions\GeneralException;
 
@@ -20,7 +21,7 @@ class EloquentFundDocumentRepository extends DbRepository
 	 * 
 	 * @var string
 	 */
-	public $moduleTitle = 'Fund Document';
+	public $moduleTitle = 'Company Document';
 
 	/**
 	 * Table Headers
@@ -29,7 +30,7 @@ class EloquentFundDocumentRepository extends DbRepository
 	 */
 	public $tableHeaders = [
 		'title' 			=> 'Title',
-		'fund_title' 		=> 'Fund Name',
+		'company_title' 	=> 'Company Name',
 		'category' 			=> 'Category',
 		'additional_link'	=> 'Download',
 		'description' 		=> 'Description',
@@ -49,9 +50,9 @@ class EloquentFundDocumentRepository extends DbRepository
 			'searchable' 	=> true, 
 			'sortable'		=> true
 		],
-		'fund_title' => [
-			'data' 			=> 'fund_title',
-			'name' 			=> 'fund_title',
+		'company_title' => [
+			'data' 			=> 'company_title',
+			'name' 			=> 'company_title',
 			'searchable' 	=> true, 
 			'sortable'		=> true
 		],
@@ -128,13 +129,13 @@ class EloquentFundDocumentRepository extends DbRepository
 	 * @var array
 	 */
 	public $moduleRoutes = [
-		'listRoute' 	=> 'fund-documents.index',
-		'createRoute' 	=> 'fund-documents.create',
-		'storeRoute' 	=> 'fund-documents.store',
-		'editRoute' 	=> 'fund-documents.edit',
-		'updateRoute' 	=> 'fund-documents.update',
-		'deleteRoute' 	=> 'fund-documents.destroy',
-		'dataRoute' 	=> 'fund-documents.get-list-data'
+		'listRoute' 	=> 'company-documents.index',
+		'createRoute' 	=> 'company-documents.create',
+		'storeRoute' 	=> 'company-documents.store',
+		'editRoute' 	=> 'company-documents.edit',
+		'updateRoute' 	=> 'company-documents.update',
+		'deleteRoute' 	=> 'company-documents.destroy',
+		'dataRoute' 	=> 'company-documents.get-list-data'
 	];
 
 	/**
@@ -157,6 +158,7 @@ class EloquentFundDocumentRepository extends DbRepository
 	{
 		$this->model 		= new FundDocument;
 		$this->entityModel 	= new Entity;
+		$this->companyModel = new Company;
 	}
 
 	/**
@@ -260,7 +262,7 @@ class EloquentFundDocumentRepository extends DbRepository
 			$this->model->getTable().'.description',
 			$this->model->getTable().'.additional_link',
 			$this->model->getTable().'.status',
-			$this->entityModel->getTable().'.title as fund_title',
+			$this->companyModel->getTable().'.title as company_title',
 		];
     }
 
@@ -270,7 +272,7 @@ class EloquentFundDocumentRepository extends DbRepository
     public function getForDataTable()
     {
     	return  $this->model->select($this->getTableFields())
-    			->leftjoin($this->entityModel->getTable(), $this->entityModel->getTable().'.id', '=', $this->model->getTable().'.fund_id')->get();
+    			->leftjoin($this->companyModel->getTable(), $this->companyModel->getTable().'.id', '=', $this->model->getTable().'.company_id')->get();
         
     }
 

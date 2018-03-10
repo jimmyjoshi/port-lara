@@ -44,10 +44,31 @@
                 </a>
             </li>
 
-             <li class="{{ active_class(Active::checkUriPattern('admin/company')) }}">
+            <li class="{{ active_class(Active::checkUriPattern('admin/company')) }}">
                 <a href="{{ route('admin.company.index') }}">
                     <i class="fa fa-dashboard"></i>
                     <span>Company Manager</span>
+                </a>
+            </li>
+
+            <li class="{{ active_class(Active::checkUriPattern('admin/key-contacts')) }}">
+                <a href="{{ route('admin.key-contacts.index') }}">
+                    <i class="fa fa-dashboard"></i>
+                    <span>Key Contacts Manager</span>
+                </a>
+            </li>
+
+            <li class="{{ active_class(Active::checkUriPattern('admin/company-documents')) }}">
+                <a href="{{ route('admin.company-documents.index') }}">
+                    <i class="fa fa-dashboard"></i>
+                    <span>Company Documents</span>
+                </a>
+            </li>
+
+            <li class="{{ active_class(Active::checkUriPattern('admin/company-notes')) }}">
+                <a href="{{ route('admin.company-notes.index') }}">
+                    <i class="fa fa-dashboard"></i>
+                    <span>Company Notes</span>
                 </a>
             </li>
 

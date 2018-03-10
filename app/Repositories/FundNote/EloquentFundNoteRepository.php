@@ -3,6 +3,7 @@
 use App\Models\FundNote\FundNote;
 use App\Models\Access\User\User;
 use App\Models\Entity\Entity;
+use App\Models\Company\Company;
 use App\Repositories\DbRepository;
 use App\Exceptions\GeneralException;
 
@@ -20,7 +21,7 @@ class EloquentFundNoteRepository extends DbRepository
 	 * 
 	 * @var string
 	 */
-	public $moduleTitle = 'Fund Note';
+	public $moduleTitle = 'Company Note';
 
 	/**
 	 * Table Headers
@@ -29,7 +30,7 @@ class EloquentFundNoteRepository extends DbRepository
 	 */
 	public $tableHeaders = [
 		'title' 			=> 'Title',
-		'fund_title' 		=> 'Fund Name',
+		'company_title' 	=> 'Company Name',
 		'title_by' 			=> 'Created By',
 		'description' 		=> 'Description',
 		'status' 			=> 'Status',
@@ -48,9 +49,9 @@ class EloquentFundNoteRepository extends DbRepository
 			'searchable' 	=> true, 
 			'sortable'		=> true
 		],
-		'fund_title' => [
-			'data' 			=> 'fund_title',
-			'name' 			=> 'fund_title',
+		'company_title' => [
+			'data' 			=> 'company_title',
+			'name' 			=> 'company_title',
 			'searchable' 	=> true, 
 			'sortable'		=> true
 		],
@@ -121,13 +122,13 @@ class EloquentFundNoteRepository extends DbRepository
 	 * @var array
 	 */
 	public $moduleRoutes = [
-		'listRoute' 	=> 'fund-notes.index',
-		'createRoute' 	=> 'fund-notes.create',
-		'storeRoute' 	=> 'fund-notes.store',
-		'editRoute' 	=> 'fund-notes.edit',
-		'updateRoute' 	=> 'fund-notes.update',
-		'deleteRoute' 	=> 'fund-notes.destroy',
-		'dataRoute' 	=> 'fund-notes.get-list-data'
+		'listRoute' 	=> 'company-notes.index',
+		'createRoute' 	=> 'company-notes.create',
+		'storeRoute' 	=> 'company-notes.store',
+		'editRoute' 	=> 'company-notes.edit',
+		'updateRoute' 	=> 'company-notes.update',
+		'deleteRoute' 	=> 'company-notes.destroy',
+		'dataRoute' 	=> 'company-notes.get-list-data'
 	];
 
 	/**
@@ -150,6 +151,7 @@ class EloquentFundNoteRepository extends DbRepository
 	{
 		$this->model 		= new FundNote;
 		$this->entityModel 	= new Entity;
+		$this->companyModel = new Company;
 	}
 
 	/**
@@ -252,7 +254,7 @@ class EloquentFundNoteRepository extends DbRepository
 			$this->model->getTable().'.description',
 			$this->model->getTable().'.title_by',
 			$this->model->getTable().'.status',
-			$this->entityModel->getTable().'.title as fund_title',
+			$this->companyModel->getTable().'.title as company_title',
 		];
     }
 
@@ -262,7 +264,7 @@ class EloquentFundNoteRepository extends DbRepository
     public function getForDataTable()
     {
     	return  $this->model->select($this->getTableFields())
-    			->leftjoin($this->entityModel->getTable(), $this->entityModel->getTable().'.id', '=', $this->model->getTable().'.fund_id')->get();
+    			->leftjoin($this->companyModel->getTable(), $this->companyModel->getTable().'.id', '=', $this->model->getTable().'.company_id')->get();
         
     }
 

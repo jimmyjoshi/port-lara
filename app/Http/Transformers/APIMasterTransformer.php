@@ -291,7 +291,7 @@ class APIMasterTransformer extends Transformer
         }
 
 
-       if(isset($masterCompany->fund->fund_companies) && count($masterCompany->fund->fund_companies))
+       /*if(isset($masterCompany->fund->fund_companies) && count($masterCompany->fund->fund_companies))
         {
             foreach($masterCompany->fund->fund_companies as $company)
             {
@@ -305,7 +305,7 @@ class APIMasterTransformer extends Transformer
                         'percentage'            => $company->percentage,
                     ];
             }
-        }
+        }*/
 
         if(isset($masterCompany->company_documents) && count($masterCompany->company_documents))
         {

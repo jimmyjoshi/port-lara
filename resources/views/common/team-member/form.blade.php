@@ -39,6 +39,48 @@
     </div>
 </div>
 
+
+<div class="box-body">
+    <div class="form-group">
+        {{ Form::label('address', 'Address :', ['class' => 'col-lg-2 control-label']) }}
+
+        <div class="col-lg-10">
+            {{ Form::text('address', null, ['class' => 'form-control', 'placeholder' => 'Address']) }}
+        </div>
+    </div>
+</div>
+
+<div class="box-body">
+    <div class="form-group">
+        {{ Form::label('city', 'City :', ['class' => 'col-lg-2 control-label']) }}
+
+        <div class="col-lg-10">
+            {{ Form::text('city', null, ['class' => 'form-control', 'placeholder' => 'City']) }}
+        </div>
+    </div>
+</div>
+
+<div class="box-body">
+    <div class="form-group">
+        {{ Form::label('email_id', 'Email Id :', ['class' => 'col-lg-2 control-label']) }}
+
+        <div class="col-lg-10">
+            {{ Form::text('email_id', null, ['class' => 'form-control', 'placeholder' => 'Email Id']) }}
+        </div>
+    </div>
+</div>
+
+<div class="box-body">
+    <div class="form-group">
+        {{ Form::label('website', 'Website :', ['class' => 'col-lg-2 control-label']) }}
+
+        <div class="col-lg-10">
+            {{ Form::text('website', null, ['class' => 'form-control', 'placeholder' => 'Website']) }}
+        </div>
+    </div>
+</div>
+
+
 <div class="box-body">
     <div class="form-group">
         {{ Form::label('category', 'Select Category :', ['class' => 'col-lg-2 control-label']) }}

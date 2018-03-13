@@ -31,7 +31,13 @@ class TeamMember extends BaseModel
         'profile_picture',
         'category',
         'description',
-        'status'
+        'status',
+        'address',
+        'city',
+        'zip',
+        'state',
+        'email_id',
+        'website'
     ];
 
     /**

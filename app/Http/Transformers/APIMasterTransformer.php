@@ -241,7 +241,7 @@ class APIMasterTransformer extends Transformer
             'assetClass'    => (string) $masterCompany->fund->asset_class,
             'fundSize'      => $masterCompany->fund->fund_size,
             'description'   => $masterCompany->fund->description,
-            'totalInvested' => isset($masterCompany->fund->fund_companies) ? $masterCompany->fund->fund_companies->sum('amount') : 0,
+            'totalInvested' => isset($masterCompany->amount) ? $masterCompany->amount : 0,
             'companies'     => $companyData,
             'contacts'      => $contacts,
             'documents'     => $documents,

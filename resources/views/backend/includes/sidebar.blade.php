@@ -79,6 +79,13 @@
                 </a>
             </li>
 
+            <li class="{{ active_class(Active::checkUriPattern('admin/team-members')) }}">
+                <a href="{{ route('admin.team-members.index') }}">
+                    <i class="fa fa-dashboard"></i>
+                    <span>Teams Member</span>
+                </a>
+            </li>
+
             <li class="{{ active_class(Active::checkUriPattern('admin/contacts')) }}">
                 <a href="{{ route('admin.contacts.index') }}">
                     <i class="fa fa-dashboard"></i>

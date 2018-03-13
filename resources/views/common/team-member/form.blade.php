@@ -3,7 +3,7 @@
         {{ Form::label('team_id', 'Select Team :', ['class' => 'col-lg-2 control-label']) }}
 
         <div class="col-lg-10">
-            {{ Form::select('fund_id', ['' => 'Select Team'] + $teams, null, ['class' => 'form-control', 'required' => 'required']) }}
+            {{ Form::select('team_id', ['' => 'Select Team'] + $teams, null, ['class' => 'form-control', 'required' => 'required']) }}
         </div>
     </div>
 </div>

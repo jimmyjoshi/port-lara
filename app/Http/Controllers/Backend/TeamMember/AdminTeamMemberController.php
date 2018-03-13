@@ -113,9 +113,11 @@ class AdminTeamMemberController extends Controller
     public function edit($id, Request $request)
     {
         $event = $this->repository->findOrThrowException($id);
+        $teams = $this->teamRepository->all()->pluck('title', 'id')->toArray();
 
         return view($this->repository->setAdmin(true)->getModuleView('editView'))->with([
             'item'          => $event,
+            'teams'         => $teams,
             'repository'    => $this->repository
         ]);
     }

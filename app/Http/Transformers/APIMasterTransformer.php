@@ -556,7 +556,7 @@ class APIMasterTransformer extends Transformer
                     'memberId'          => (int) $member->id,
                     'teamId'            => (int) $member->team_id,
                     'title'             => $member->title,
-                    'company'           => $member->company,
+                    'company'           => isset($member->team) ? $member->team->company : 'N/A',
                     'designation'       => $member->designation,
                     'contact_number'    => $member->contact_number,
                     'image'             => URL::to('/').'/uploads/team/'.$image,

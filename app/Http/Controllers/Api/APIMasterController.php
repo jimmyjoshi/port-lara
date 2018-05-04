@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\BaseApiController;
 use App\Repositories\Team\EloquentTeamRepository;
 use App\Repositories\Contact\EloquentContactRepository;
 use App\Repositories\DocumentCategory\EloquentDocumentCategoryRepository;
+use App\Repositories\Cash\EloquentCashRepository;
 use App\Repositories\Upload\EloquentUploadRepository;
 use App\Repositories\Entity\EloquentEntityRepository;
 use App\Repositories\ToDo\EloquentToDoRepository;
@@ -280,17 +281,23 @@ class APIMasterController extends BaseApiController
 
     public function getFinancialSummary(Request $request)
     {
+        $cashRepo           = new EloquentCashRepository;
         $user               = (object) $this->getApiUserInfo();
         $companies          = $this->companyRepository->getAllWithRelation();
-        $financialStatments  = $this->financialRepository->getAll($user->userId);
+        $cashSummary        = $cashRepo->getAll();
+
+        $financialStatments = $this->financialRepository->getAll($user->userId);
         $taxDocuments       = $this->taxRepository->getAll($user->userId);
 
-        $companiesRespone = $this->masterTransformer->allCompaniesTransform($companies);
-        $financialsRespone = $this->masterTransformer->allFinancialSummaryTransform($financialStatments);
+        $companiesRespone   = $this->masterTransformer->allCompaniesTransform($companies);
+        $cashSummaryResp    = $this->masterTransformer->allCashSummaryTransform($cashSummary);
+        $financialsRespone  = $this->masterTransformer->allFinancialSummaryTransform($financialStatments);
+
+
         $taxRespone = $this->masterTransformer->allTaxDocumentsTransform($taxDocuments);
 
         $responseData = [
-            'cashSummary'       => $companiesRespone,
+            'cashSummary'       => $cashSummaryResp,
             'financialStatment' => $financialsRespone,
             'taxDocuments'      => $taxRespone
         ];

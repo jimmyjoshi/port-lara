@@ -211,6 +211,38 @@ class APIMasterTransformer extends Transformer
         ];
     }
 
+    public function allCashSummaryTransform($items)
+    {
+        $response   = [];
+        $totalCash  = 0;
+        $totalLabel = 'Total Cash';
+
+        if(isset($items) && count($items))
+        {
+            foreach($items as $item)   
+            {
+                if($item->cash_type == "CREDIT")
+                {
+                    $totalCash = $totalCash + $item->amount;
+
+                    $response[] = [
+                        'companyId'             => 0,
+                        'title'                 => $item->title,    
+                        'amount'                => $item->amount,
+                        'status'                => $item->status ? $item->status : 1,
+                        'created'               => date('d-m-Y', strtotime($item->created_at))
+                    ];
+                }
+            }
+        }
+
+        return [
+            'label'     => $totalLabel,
+            'totalCash' => $totalCash,
+            'companies' => $response
+        ];
+    }
+
 
     public function companyDetailsTransform($masterCompany)
     {

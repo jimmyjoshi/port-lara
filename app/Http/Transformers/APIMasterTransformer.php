@@ -168,7 +168,7 @@ class APIMasterTransformer extends Transformer
                     'additionalLink'    => $item->additional_link ? $item->additional_link : '',
                     'notes'             => $item->notes,
                     'status'            => $item->status ? $item->status : 1,
-                    'created'           => date('d-m-Y', strtotime($item->created_at))
+                    'created'           => date('d-m-Y', strtotime($item->created_at)),
                 ];
             }
         }
@@ -230,7 +230,13 @@ class APIMasterTransformer extends Transformer
                         'title'                 => $item->title,    
                         'amount'                => $item->amount,
                         'status'                => $item->status ? $item->status : 1,
-                        'created'               => date('d-m-Y', strtotime($item->created_at))
+                        'created'               => date('d-m-Y', strtotime($item->created_at)),
+                        "companyCategoryId"     => 0,
+                        "fundId"                => 0,
+                        "fundTitle"             => "Test",
+                        "companyCategoryTitle"  => "Real Estate",
+                        "percentage"            => 0,
+                        "notes"                 => "This is testing.",
                     ];
                 }
             }
